@@ -6,10 +6,11 @@ About
 =====
 
 A Python client for interacting with Swiftype Enterprise content sources.
-Documentation for this api client can be found at `readthedocs
-<http://swiftype-enterprise.readthedocs.io/en/latest/`_. For
-more information, go to our `generic documentation page
-<https://app.swiftype.com/ent/docs/custom_sources>`_.
+Documentation for this API client can be found at Readthedocs
+(http://swiftype-enterprise.readthedocs.io/en/latest/). 
+
+For more information, go to our `official documentation page
+<https://app.swiftype.com/ent/docs/custom_sources>`.
 
 Installation
 ============
@@ -31,7 +32,7 @@ Examples
 ========
 Here's a basic example for indexing a document into a custom content source.
 You can get an access token and a content source key after creating a content
-source `here <https://app.swiftype.com/ent/sources/custom/new>`:
+source here https://app.swiftype.com/ent/sources/custom/new:
 
 .. code-block:: python
 
@@ -42,10 +43,10 @@ source `here <https://app.swiftype.com/ent/sources/custom/new>`:
     >>> client = SwiftypeEnterpriseClient(authorization_token)
     >>> documents = [
         {
-            'external_id': '1',
+            'external_id': '1234',
             'url': 'https://github.com/swiftype/swiftype-enterprise-python',
             'title': 'Swiftype Enterprise Python Github',
-            'body': 'A descriptive body'
+            'body': 'A descriptive body, with document contents and metadata'
         }
     ]
     >>> try:
@@ -53,5 +54,4 @@ source `here <https://app.swiftype.com/ent/sources/custom/new>`:
     >>>     print(document_receipt_ids)
     >>> except SynchronousDocumentIndexingFailed:
     >>>     # Timed out before documents could finish indexing
-    [{'status': 'complete', 'errors': [], 'external_id': 'doc_receipt_1', 'id': '1', 'links': {'document_receipt': 'http://localhost:3002/api/v1/ent/document_receipts/5955d325f81eeace502f0a50'}}, ...]
 

@@ -9,8 +9,8 @@ A Python client for interacting with Swiftype Enterprise content sources.
 Documentation for this API client can be found at Readthedocs
 (http://swiftype-enterprise.readthedocs.io/en/latest/). 
 
-For more information, go to our `official documentation page
-<https://app.swiftype.com/ent/docs/custom_sources>`.
+For more information, go to our official documentation page
+(https://app.swiftype.com/ent/docs/custom_sources).
 
 Installation
 ============
@@ -32,7 +32,7 @@ Examples
 ========
 Here's a basic example for indexing a document into a custom content source.
 You can get an access token and a content source key after creating a content
-source here https://app.swiftype.com/ent/sources/custom/new:
+source here: https://app.swiftype.com/ent/sources/custom/new
 
 .. code-block:: python
 
@@ -50,7 +50,7 @@ source here https://app.swiftype.com/ent/sources/custom/new:
         }
     ]
     >>> try:
-    >>>     document_receipt_ids = client.index_documents(content_source_key, documents, timeout=10, delay=2)
+    >>>     document_receipts = client.index_documents(content_source_key, documents, timeout=10, delay=2)
     >>>     print(document_receipt_ids)
     >>> except SynchronousDocumentIndexingFailed:
     >>>     # Timed out before documents could finish indexing

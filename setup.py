@@ -20,7 +20,7 @@ finally:
 
 setup(
     name='swiftype_enterprise',
-    version='0.0.1',
+    version='0.0.2',
     description='An API client for Swiftype Enterprise',
     long_description=readme_content,
     url='https://github.com/swiftype/swiftype-enterprise-python',

@@ -5,7 +5,9 @@ Swiftype Enterprise API Client for Python
 About
 =====
 
-A Python client for interacting with Swiftype Enterprise content sources. For
+A Python client for interacting with Swiftype Enterprise content sources.
+Documentation for this api client can be found at `readthedocs
+<http://swiftype-enterprise.readthedocs.io/en/latest/`_. For
 more information, go to our `generic documentation page
 <https://app.swiftype.com/ent/docs/custom_sources>`_.
 

@@ -36,22 +36,22 @@ source here: https://app.swiftype.com/ent/sources/custom/new
 
 .. code-block:: python
 
-    >>> from swiftype_enterprise import SwiftypeEnterpriseClient
-    >>> from swiftype_enterprise.exceptions import SynchronousDocumentIndexingFailed
-    >>> content_source_key = 'content source key'
-    >>> authorization_token = 'authorization token'
-    >>> client = SwiftypeEnterpriseClient(authorization_token)
-    >>> documents = [
-        {
-            'external_id': '1234',
-            'url': 'https://github.com/swiftype/swiftype-enterprise-python',
-            'title': 'Swiftype Enterprise Python Github',
-            'body': 'A descriptive body, with document contents and metadata'
-        }
-    ]
-    >>> try:
-    >>>     document_receipts = client.index_documents(content_source_key, documents, timeout=10, delay=2)
-    >>>     print(document_receipt_ids)
-    >>> except SynchronousDocumentIndexingFailed:
-    >>>     # Timed out before documents could finish indexing
+  from swiftype_enterprise import SwiftypeEnterpriseClient
+  from swiftype_enterprise.exceptions import SynchronousDocumentIndexingFailed
+  content_source_key = 'content source key'
+  authorization_token = 'authorization token'
+  client = SwiftypeEnterpriseClient(authorization_token)
+  documents = [
+    {
+      'external_id': '1234',
+      'url': 'https://github.com/swiftype/swiftype-enterprise-python',
+      'title': 'Swiftype Enterprise Python Github',
+      'body': 'A descriptive body, with document contents and metadata'
+    }
+  ]
+  try:
+    document_receipts = client.index_documents(content_source_key, documents, timeout=10, delay=2)
+    print(document_receipt_ids)
+  except SynchronousDocumentIndexingFailed:
+      # Timed out before documents could finish indexing
 

@@ -61,12 +61,12 @@ class SwiftypeEnterpriseClient:
             }
         ]
         >>> try:
-        >>>     document_receipt_ids = client.index_documents(content_source_key, documents, timeout=10, delay=2)
-        >>>     print(document_receipt_ids)
+        >>>     document_receipts = client.index_documents(content_source_key, documents, timeout=10, delay=2)
+        >>>     print(document_receipts)
         >>> except SynchronousDocumentIndexingFailed:
         >>>     # Timed out before documents could finish indexing
         >>>     pass
-        [{'status': 'complete', 'errors': [], 'external_id': '1', 'id': 'doc_receipt_1', 'links': {'document_receipt': 'http://localhost:3002/api/v1/ent/document_receipts/5955d325f81eeace502f0a50'}}, ...]
+        [{'status': 'complete', 'errors': [], 'external_id': '1', 'id': '5955d325f81eeace502f0a50', 'links': {'document_receipt': 'http://localhost:3002/api/v1/ent/document_receipts/5955d325f81eeace502f0a50'}}, ...]
         """
         response = self._async_create_or_update_documents(content_source_key,
                                                           documents)
@@ -130,7 +130,7 @@ class SwiftypeEnterpriseClient:
         >>> except SwiftypeEnterpriseError:
         >>>     # handle exception
         >>>     pass
-        [{'status': 'complete', 'errors': [], 'external_id': '5955d325f81eeace502f0a50', 'id': 'doc_receipt_1', 'links': {'document_receipt': 'http://localhost:3002/api/v1/ent/document_receipts/doc_receipt_1'}}, ...]
+        [{'status': 'complete', 'errors': [], 'external_id': '1', 'id': 'doc_receipt_1', 'links': {'document_receipt': 'http://localhost:3002/api/v1/ent/document_receipts/doc_receipt_1'}}, ...]
         """
         return self._get_request('document_receipts/bulk_show.json',
                                  {'ids': ','.join(document_receipt_ids)})

@@ -1,5 +1,5 @@
-:class:`~swiftype_enterprise.swiftype_enterprise.SwiftypeEnterpriseClient`
-==================================================================
+:class:`~swiftype_enterprise.SwiftypeEnterpriseClient`
+======================================================
 
 .. currentmodule:: swiftype_enterprise
 

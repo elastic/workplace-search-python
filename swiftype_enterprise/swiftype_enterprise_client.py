@@ -65,6 +65,7 @@ class SwiftypeEnterpriseClient:
         >>>     print(document_receipt_ids)
         >>> except SynchronousDocumentIndexingFailed:
         >>>     # Timed out before documents could finish indexing
+        >>>     pass
         [{'status': 'complete', 'errors': [], 'external_id': '1', 'id': 'doc_receipt_1', 'links': {'document_receipt': 'http://localhost:3002/api/v1/ent/document_receipts/5955d325f81eeace502f0a50'}}, ...]
         """
         response = self._async_create_or_update_documents(content_source_key,
@@ -103,6 +104,7 @@ class SwiftypeEnterpriseClient:
         >>>     print(document_receipt_ids)
         >>> except SwiftypeEnterpriseError:
         >>>     # handle exception
+        >>>     pass
         ['5955d325f81eeace502f0a50']
         """
         response = self._async_create_or_update_documents(content_source_key,
@@ -127,6 +129,7 @@ class SwiftypeEnterpriseClient:
         >>>     print(document_receipts)
         >>> except SwiftypeEnterpriseError:
         >>>     # handle exception
+        >>>     pass
         [{'status': 'complete', 'errors': [], 'external_id': '5955d325f81eeace502f0a50', 'id': 'doc_receipt_1', 'links': {'document_receipt': 'http://localhost:3002/api/v1/ent/document_receipts/doc_receipt_1'}}, ...]
         """
         return self._get_request('document_receipts/bulk_show.json',
@@ -153,6 +156,7 @@ class SwiftypeEnterpriseClient:
         >>>     print(response)
         >>> except SwiftypeEnterpriseError:
         >>>     # handle exception
+        >>>     pass
         [{"external_id": '1',"success": True}]
         """
         endpoint = "sources/{}/documents/bulk_destroy".format(

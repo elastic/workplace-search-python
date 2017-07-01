@@ -53,5 +53,6 @@ source here: https://app.swiftype.com/ent/sources/custom/new
     document_receipts = client.index_documents(content_source_key, documents, timeout=10, delay=2)
     print(document_receipt_ids)
   except SynchronousDocumentIndexingFailed:
-      # Timed out before documents could finish indexing
+    # Timed out before documents could finish indexing
+    pass
 

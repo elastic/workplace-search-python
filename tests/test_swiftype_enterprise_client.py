@@ -160,7 +160,7 @@ class TestSwiftypeEnterpriseClient(TestCase):
             self.client.raise_if_document_invalid(invalid_document)
 
         self.assertEqual(context.exception.document, invalid_document)
-        self.assertIn('url', context.exception.message)
+        self.assertIn('url', context.exception.args[0])
 
         document_with_invalid_key = {
             'external_id': 'external_id',
@@ -174,7 +174,7 @@ class TestSwiftypeEnterpriseClient(TestCase):
             self.client.raise_if_document_invalid(document_with_invalid_key)
 
         self.assertEqual(bad_key_context.exception.document, document_with_invalid_key)
-        self.assertIn('bad_key', bad_key_context.exception.message)
+        self.assertIn('bad_key', bad_key_context.exception.args[0])
 
     @skipIf(platform.system() == 'Windows', 'Not Windows compatible')
     def test_poll_document_receipt_ids_for_completion(self):
@@ -259,8 +259,9 @@ class TestSwiftypeEnterpriseClient(TestCase):
                 )
 
         with patch('platform.system', return_value='Windows'):
-            with self.assertRaises(OSError):
+            with self.assertRaises(OSError) as context:
                 self.client.index_documents(content_source_key, documents)
+            self.assertIn('Please use `async_index_documents` instead', context.exception.args[0])
 
     def test_destroy_documents(self):
         content_source_key = 'key'

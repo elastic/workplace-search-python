@@ -47,7 +47,8 @@ class SwiftypeEnterpriseClient:
         :Keyword Arguments:
             *timeout* -- Number of seconds to wait for documents to finish
             indexing
-            *delay* (``int``) -- Number of seconds to wait before checking
+
+            *delay* -- Number of seconds to wait before checking
             if documents are done indexing
 
         >>> from swiftype_enterprise import SwiftypeEnterpriseClient

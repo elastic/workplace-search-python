@@ -18,14 +18,19 @@ try:
 finally:
     f.close()
 
+here = path.abspath(path.dirname(__file__))
+about = {}
+with open(path.join(here, 'swiftype_enterprise', '__version__.py'), 'r', 'utf-8') as f:
+    exec(f.read(), about)
+
 setup(
-    name='swiftype_enterprise',
-    version='0.0.2',
-    description='An API client for Swiftype Enterprise',
+    name=about['__title__'],
+    version=about['__version__'],
+    description=about['__description__'],
     long_description=readme_content,
-    url='https://github.com/swiftype/swiftype-enterprise-python',
-    author='Swiftype',
-    author_email='eng@swiftype.com',
+    url=about['__url__'],
+    author=about['__author__'],
+    author_email=about['__author_email__'],
     license='MIT',
     classifiers=[
         'Development Status :: 4 - Beta',

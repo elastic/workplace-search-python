@@ -1,0 +1,6 @@
+__title__ = 'swiftype_enterprise'
+__description__ = 'An API client for Swiftype Enterprise'
+__url__ = 'https://github.com/swiftype/swiftype-enterprise-python'
+__version__ = '0.0.2'
+__author__ = 'Swiftype'
+__author_email__ = 'eng@swiftype.com'

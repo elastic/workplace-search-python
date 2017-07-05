@@ -224,12 +224,14 @@ class SwiftypeEnterpriseClient:
                 document
             )
 
-        invalid_fields = set(document.keys()) - set(self.REQUIRED_DOCUMENT_TOP_LEVEL_KEYS + self.OPTIONAL_DOCUMENT_TOP_LEVEL_KEYS)
+        core_top_level_keys = self.REQUIRED_DOCUMENT_TOP_LEVEL_KEYS + self.OPTIONAL_DOCUMENT_TOP_LEVEL_KEYS
+        invalid_fields = set(document.keys()) - set(core_top_level_keys)
         if len(invalid_fields):
             raise InvalidDocument(
                 "Invalid fields in document: {}".format(
                     ', '.join(invalid_fields)
-                ),
+                ) + ', ' +
+                "supported fields are {}".format(', '.join(core_top_level_keys)),
                 document
             )
             

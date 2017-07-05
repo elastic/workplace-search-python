@@ -1,6 +1,6 @@
 import requests
 import time
-from .exceptions import InvalidCredentials, NonExistentRecord, RecordAlreadyExists, BadRequest, Forbidden, InvalidDocument
+from .exceptions import InvalidCredentials, NonExistentRecord, RecordAlreadyExists, BadRequest, Forbidden, InvalidDocument, SynchronousDocumentIndexingFailed
 from .utils import Timeout, windows_incompatible
 from future.utils import lmap
 
@@ -26,7 +26,8 @@ class SwiftypeEnterpriseClient:
         self.authorization_token = authorization_token
         self.base_url = base_url
 
-    @windows_incompatible
+    @windows_incompatible('This function is not supported on Windows. '
+                          'Please use `async_index_documents` instead.')
     def index_documents(self, content_source_key, documents, **kwargs):
         """Creates or updates documents for a content source.
         Raises :class:`~swiftype_enterprise.SynchronousDocumentIndexingFailed`
@@ -197,11 +198,11 @@ class SwiftypeEnterpriseClient:
         payload = payload or {}
         return self._request_helper(requests.get, endpoint, params=payload)
 
-    @windows_incompatible
+    @windows_incompatible()
     def _poll_document_receipt_ids_for_completion(self, document_receipt_ids,
                                                   timeout=10,
                                                   delay=0.5):
-        with Timeout(seconds=timeout):
+        with Timeout(SynchronousDocumentIndexingFailed, seconds=timeout):
             while True:
                 doc_receipts = self.document_receipts(document_receipt_ids)
 

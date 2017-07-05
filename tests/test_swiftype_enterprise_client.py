@@ -11,7 +11,7 @@ except ImportError:
     from mock import MagicMock, patch
 
 from swiftype_enterprise.swiftype_enterprise_client import SwiftypeEnterpriseClient
-from swiftype_enterprise.exceptions import InvalidCredentials, SynchronousDocumentIndexingFailed, InvalidDocument
+from swiftype_enterprise.exceptions import SynchronousDocumentIndexingFailed, InvalidDocument
 
 class TestSwiftypeEnterpriseClient(TestCase):
     dummy_authorization_token = 'authorization_token'
@@ -19,46 +19,19 @@ class TestSwiftypeEnterpriseClient(TestCase):
     def setUp(self):
         self.client = SwiftypeEnterpriseClient('authorization_token')
 
-    def test_request_success(self):
-        expected_return = {'foo': 'bar'}
-        stubbed_return = MagicMock(status_code=codes.ok,
-                                   json=lambda: expected_return)
-        with patch('requests.post', return_value=stubbed_return):
-            response = self.client._post_request('http://doesnt.matter.org')
-            self.assertEqual(response, expected_return)
-
-    def test_request_authetication(self):
-        stubbed_return = MagicMock(status_code=codes.ok,
-                                   json=lambda: {})
-
-        def verify_authorization_header(*args, **kwargs):
-            self.assertEqual(
-                kwargs.pop('headers')['Authorization'],
-                "Bearer {}".format(self.dummy_authorization_token)
-            )
-            return stubbed_return
-
-        with patch('requests.post', side_effect=verify_authorization_header):
-            self.client._post_request('http://doesnt.matter.org')
-
-    def test_request_throw_error(self):
-        stubbed_return = MagicMock(status_code=codes.unauthorized)
-        with patch('requests.post', return_value=stubbed_return):
-            with self.assertRaises(InvalidCredentials) as _context:
-                self.client._post_request('http://doesnt.matter.org')
-
     def test_document_receipts(self):
         document_receipt_ids = ['1', '2']
         stubbed_response = MagicMock(status_code=codes.ok, json=lambda: None)
         expected_endpoint = "{}/{}".format(self.client.SWIFTYPE_ENTERPRISE_API_BASE_URL,
                                            'document_receipts/bulk_show.json')
         def side_effect(*args, **kwargs):
-            self.assertEqual(expected_endpoint, args[0])
+            self.assertEqual('get', args[0])
+            self.assertEqual(expected_endpoint, args[1])
             self.assertEqual(kwargs.pop('params').get('ids'),
                              ','.join(document_receipt_ids))
             return stubbed_response
 
-        with patch('requests.get', side_effect=side_effect):
+        with patch('requests.Session.request', side_effect=side_effect):
             self.client.document_receipts(document_receipt_ids)
 
         external_id = 1
@@ -86,7 +59,7 @@ class TestSwiftypeEnterpriseClient(TestCase):
         }
         stubbed_response = MagicMock(status_code=codes.ok,
                                      json=lambda: response_body)
-        with patch('requests.get', return_value=stubbed_response):
+        with patch('requests.Session.request', return_value=stubbed_response):
             response = self.client.document_receipts([document_receipt_id])
             self.assertEqual(response, response_body)
 
@@ -113,11 +86,12 @@ class TestSwiftypeEnterpriseClient(TestCase):
                     content_source_key)
 
         def side_effect(*args, **kwargs):
-            self.assertEqual(expected_endpoint, args[0])
+            self.assertEqual('post', args[0])
+            self.assertEqual(expected_endpoint, args[1])
             self.assertEqual(kwargs.pop('json'), documents)
             return stubbed_response
 
-        with patch('requests.post', side_effect=side_effect):
+        with patch('requests.Session.request', side_effect=side_effect):
             self.client.async_index_documents(content_source_key, documents)
 
         document_receipt_ids = ['1', '2']
@@ -127,7 +101,7 @@ class TestSwiftypeEnterpriseClient(TestCase):
         stubbed_response = MagicMock(status_code=codes.ok,
                                      json=lambda: response_body)
 
-        with patch('requests.post', return_value=stubbed_response):
+        with patch('requests.Session.request', return_value=stubbed_response):
             self.assertEqual(
                 self.client.async_index_documents('key', documents),
                 document_receipt_ids)
@@ -184,7 +158,7 @@ class TestSwiftypeEnterpriseClient(TestCase):
             def slow_side_effect(*args, **kwargs):
                 time.sleep(20)
 
-            with patch('requests.get', side_effect=slow_side_effect):
+            with patch('requests.Session.request', side_effect=slow_side_effect):
                 self.client._poll_document_receipt_ids_for_completion([], 1)
 
         pending_document_receipts_response = [
@@ -196,7 +170,7 @@ class TestSwiftypeEnterpriseClient(TestCase):
         stubbed_response = MagicMock(status_code=codes.ok,
                                      json=lambda: pending_document_receipts_response)
         with self.assertRaises(SynchronousDocumentIndexingFailed) as _context:
-            with patch('requests.get', side_effect=cycle([stubbed_response])):
+            with patch('requests.Session.request', side_effect=cycle([stubbed_response])):
                 self.client._poll_document_receipt_ids_for_completion([], 1)
 
         document_receipt_id = 'doc_receipt_id'
@@ -217,7 +191,7 @@ class TestSwiftypeEnterpriseClient(TestCase):
         stubbed_response_2 = MagicMock(status_code=codes.ok,
                                json=lambda: response_body_2)
 
-        with patch('requests.get', side_effect=[stubbed_response_1, stubbed_response_2]):
+        with patch('requests.Session.request', side_effect=[stubbed_response_1, stubbed_response_2]):
             self.assertEqual(
                 self.client._poll_document_receipt_ids_for_completion(['some_receipt_id'], 2),
                 response_body_2
@@ -249,14 +223,21 @@ class TestSwiftypeEnterpriseClient(TestCase):
         doc_receipts_stubbed_response = MagicMock(status_code=codes.ok,
                                                        json=lambda: doc_receipts_response)
 
+        def endpoint_side_effect(*args, **kwargs):
+            endpoint = args[1]
+            if 'document_receipts/bulk_show' in endpoint:
+                return doc_receipts_stubbed_response
+            elif 'documents/bulk_create' in endpoint:
+                return bulk_create_docs_stubbed_response
+            else:
+                raise Exception("Endpoint not stubbed: {}".format(endpoint))
+
         # stub documents bulk_create endpoint
-        with patch('requests.post', return_value=bulk_create_docs_stubbed_response):
-            # stub document receipts bulk_show endpoint
-            with patch('requests.get', return_value=doc_receipts_stubbed_response):
-                self.assertEqual(
-                    self.client.index_documents(content_source_key, documents),
-                    doc_receipts_response
-                )
+        with patch('requests.Session.request', side_effect=endpoint_side_effect):
+            self.assertEqual(
+                self.client.index_documents(content_source_key, documents),
+                doc_receipts_response
+            )
 
         with patch('platform.system', return_value='Windows'):
             with self.assertRaises(OSError) as context:
@@ -274,7 +255,7 @@ class TestSwiftypeEnterpriseClient(TestCase):
         ]
         stubbed_response = MagicMock(status_code=codes.ok,
                                      json=lambda: response_body)
-        with patch('requests.post', return_value=stubbed_response):
+        with patch('requests.Session.request', return_value=stubbed_response):
             self.assertEqual(
                 self.client.destroy_documents(content_source_key, external_ids),
                 response_body

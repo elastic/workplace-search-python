@@ -1,6 +1,6 @@
-import requests
 import time
-from .exceptions import InvalidCredentials, NonExistentRecord, RecordAlreadyExists, BadRequest, Forbidden, InvalidDocument, SynchronousDocumentIndexingFailed
+from .exceptions import InvalidDocument, SynchronousDocumentIndexingFailed
+from .swiftype_request_session import SwiftypeRequestSession
 from .utils import Timeout, windows_incompatible
 from future.utils import lmap
 
@@ -25,6 +25,7 @@ class SwiftypeEnterpriseClient:
     def __init__(self, authorization_token, base_url=SWIFTYPE_ENTERPRISE_API_BASE_URL):
         self.authorization_token = authorization_token
         self.base_url = base_url
+        self.swiftype_session = SwiftypeRequestSession(self.authorization_token, self.base_url)
 
     @windows_incompatible('This function is not supported on Windows. '
                           'Please use `async_index_documents` instead.')
@@ -133,8 +134,11 @@ class SwiftypeEnterpriseClient:
         >>>     pass
         [{'status': 'complete', 'errors': [], 'external_id': '1', 'id': 'doc_receipt_1', 'links': {'document_receipt': 'http://localhost:3002/api/v1/ent/document_receipts/doc_receipt_1'}}, ...]
         """
-        return self._get_request('document_receipts/bulk_show.json',
-                                 {'ids': ','.join(document_receipt_ids)})
+        return self.swiftype_session.request(
+            'get',
+            'document_receipts/bulk_show.json',
+            params={'ids': ','.join(document_receipt_ids)}
+        )
 
     def destroy_documents(self, content_source_key, external_ids):
         """Destroys documents in a content source by their external_ids.
@@ -162,41 +166,7 @@ class SwiftypeEnterpriseClient:
         """
         endpoint = "sources/{}/documents/bulk_destroy".format(
             content_source_key)
-        return self._post_request(endpoint, external_ids)
-
-    def _raise_if_error(self, response):
-        if response.status_code == requests.codes.unauthorized:
-            raise InvalidCredentials(response.reason)
-        elif response.status_code == requests.codes.bad:
-            raise BadRequest()
-        elif response.status_code == requests.codes.conflict:
-            raise RecordAlreadyExists()
-        elif response.status_code == requests.codes.not_found:
-            raise NonExistentRecord()
-        elif response.status_code == requests.codes.forbidden:
-            raise Forbidden()
-
-        response.raise_for_status()
-
-    def _request_helper(self, request_func, endpoint, **kwargs):
-        url = "{}/{}".format(self.base_url, endpoint)
-        headers = {
-            'Authorization': "Bearer {}".format(self.authorization_token)
-        }
-
-        response = request_func(url, headers=headers, **kwargs)
-        self._raise_if_error(response)
-
-        return response.json()
-
-
-    def _post_request(self, endpoint, payload=None):
-        payload = payload or {}
-        return self._request_helper(requests.post, endpoint, json=payload)
-
-    def _get_request(self, endpoint, payload=None):
-        payload = payload or {}
-        return self._request_helper(requests.get, endpoint, params=payload)
+        return self.swiftype_session.request('post', endpoint, json=external_ids)
 
     @windows_incompatible()
     def _poll_document_receipt_ids_for_completion(self, document_receipt_ids,
@@ -233,4 +203,4 @@ class SwiftypeEnterpriseClient:
         for document in documents:
             self.raise_if_document_invalid(document)
         endpoint = "sources/{}/documents/bulk_create".format(content_source_key)
-        return self._post_request(endpoint, documents)
+        return self.swiftype_session.request('post', endpoint, json=documents)

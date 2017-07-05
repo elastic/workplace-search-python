@@ -16,6 +16,7 @@ class SwiftypeEnterpriseClient:
         'title',
         'body'
     ]
+
     OPTIONAL_DOCUMENT_TOP_LEVEL_KEYS = [
         'created_at',
         'updated_at',
@@ -33,9 +34,10 @@ class SwiftypeEnterpriseClient:
         Raises :class:`~swiftype_enterprise.SynchronousDocumentIndexingFailed`
         if the documents do not finish indexing when timeout expires.
         Raises :class:`~swiftype_enterprise.NonExistentRecord` if the
-        content_source_key is malformed or invalid. Raises a
+        content_source_key is malformed or invalid. Raises
         :class:`~swiftype_enterprise.SwiftypeEnterpriseError` if there are any
-        HTTP errors.
+        HTTP errors. Raises :class:`~swiftype_enterprise.InvalidDocument` when
+        a document is missing required fields or contains unsupported fields.
 
         :param content_source_key: Key for the content source.
         :param documents: Array of documents to be indexed.
@@ -79,9 +81,10 @@ class SwiftypeEnterpriseClient:
     def async_index_documents(self, content_source_key, documents):
         """Queues documents for to be created or updated in a content source.
         Raises :class:`~swiftype_enterprise.NonExistentRecord` if the
-        content_source_key is malformed or invalid. Raises a
+        content_source_key is malformed or invalid. Raises
         :class:`~swiftype_enterprise.SwiftypeEnterpriseError` if there are any
-        HTTP errors.
+        HTTP errors. Raises :class:`~swiftype_enterprise.InvalidDocument` when
+        a document is missing required fields or contains unsupported fields.
 
         :param content_source_key: Key for the content source.
         :param documents: Array of documents to be indexed.
@@ -114,7 +117,7 @@ class SwiftypeEnterpriseClient:
 
     def document_receipts(self, document_receipt_ids):
         """Gets document receipts from their ids.
-        Raises a :class:`~swiftype_enterprise.SwiftypeEnterpriseError` if there
+        Raises :class:`~swiftype_enterprise.SwiftypeEnterpriseError` if there
         are any HTTP errors.
 
         :param document_receipt_ids: Array of document receipt ids.
@@ -139,7 +142,7 @@ class SwiftypeEnterpriseClient:
     def destroy_documents(self, content_source_key, external_ids):
         """Destroys documents in a content source by their external_ids.
         Raises :class:`~swiftype_enterprise.NonExistentRecord` if the
-        content_source_key is malformed or invalid. Raises a
+        content_source_key is malformed or invalid. Raises
         :class:`~swiftype_enterprise.SwiftypeEnterpriseError` if there are any
         HTTP errors.
 

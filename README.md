@@ -52,8 +52,8 @@ Indexing a document into a custom content source:
     }
   ]
   try:
-    document_receipts = client.index_documents(content_source_key, documents, timeout=10, delay=2)
-    print(document_receipts)
+    document_results = client.index_documents(content_source_key, documents, timeout=10, delay=2)
+    print(document_results)
   except SynchronousDocumentIndexingFailed:
     # Timed out before documents could finish indexing
     pass

@@ -28,12 +28,8 @@ class SwiftypeEnterpriseClient:
         self.base_url = base_url
         self.swiftype_session = SwiftypeRequestSession(self.authorization_token, self.base_url)
 
-    @windows_incompatible('This function is not supported on Windows. '
-                          'Please use `async_index_documents` instead.')
     def index_documents(self, content_source_key, documents, **kwargs):
-        """Creates or updates documents for a content source.
-        Raises :class:`~swiftype_enterprise.SynchronousDocumentIndexingFailed`
-        if the documents do not finish indexing when timeout expires.
+        """Index a batch of documents in a content source.
         Raises :class:`~swiftype_enterprise.NonExistentRecord` if the
         content_source_key is malformed or invalid. Raises
         :class:`~swiftype_enterprise.SwiftypeEnterpriseError` if there are any
@@ -42,55 +38,7 @@ class SwiftypeEnterpriseClient:
 
         :param content_source_key: Key for the content source.
         :param documents: Array of documents to be indexed.
-        :param \**kwargs: See below.
-        :return: Array of dicts that represent document receipts.
-
-        :Keyword Arguments:
-            *timeout* -- Number of seconds to wait for documents to finish
-            indexing
-
-            *delay* -- Number of seconds to wait before checking
-            if documents are done indexing
-
-        >>> from swiftype_enterprise import SwiftypeEnterpriseClient
-        >>> from swiftype_enterprise.exceptions import SynchronousDocumentIndexingFailed
-        >>> content_source_key = 'content source key'
-        >>> authorization_token = 'authorization token'
-        >>> client = SwiftypeEnterpriseClient(authorization_token)
-        >>> documents = [
-            {
-                'external_id': '1',
-                'url': 'https://github.com/swiftype/swiftype-enterprise-python',
-                'title': 'Swiftype Enterprise Python Github',
-                'body': 'A descriptive body'
-            }
-        ]
-        >>> try:
-        >>>     document_receipts = client.index_documents(content_source_key, documents, timeout=10, delay=2)
-        >>>     print(document_receipts)
-        >>> except SynchronousDocumentIndexingFailed:
-        >>>     # Timed out before documents could finish indexing
-        >>>     pass
-        [{'status': 'complete', 'errors': [], 'external_id': '1', 'id': '5955d325f81eeace502f0a50', 'links': {'document_receipt': 'http://localhost:3002/api/v1/ent/document_receipts/5955d325f81eeace502f0a50'}}, ...]
-        """
-        response = self._async_create_or_update_documents(content_source_key,
-                                                          documents)
-        doc_receipt_ids = lmap(lambda x: x['id'],
-                               response['document_receipts'])
-        return self._poll_document_receipt_ids_for_completion(doc_receipt_ids,
-                                                              **kwargs)
-
-    def async_index_documents(self, content_source_key, documents):
-        """Queues documents for to be created or updated in a content source.
-        Raises :class:`~swiftype_enterprise.NonExistentRecord` if the
-        content_source_key is malformed or invalid. Raises
-        :class:`~swiftype_enterprise.SwiftypeEnterpriseError` if there are any
-        HTTP errors. Raises :class:`~swiftype_enterprise.InvalidDocument` when
-        a document is missing required fields or contains unsupported fields.
-
-        :param content_source_key: Key for the content source.
-        :param documents: Array of documents to be indexed.
-        :return: Array of document receipt ids.
+        :return: Array of document indexing results.
 
         >>> from swiftype_enterprise import SwiftypeEnterpriseClient
         >>> from swiftype_enterprise.exceptions import SwiftypeEnterpriseError
@@ -106,43 +54,15 @@ class SwiftypeEnterpriseClient:
             }
         ]
         >>> try:
-        >>>     document_receipt_ids = client.async_index_documents(content_source_key, documents)
-        >>>     print(document_receipt_ids)
+        >>>     document_results = client.index_documents(content_source_key, documents)
+        >>>     print(document_results)
         >>> except SwiftypeEnterpriseError:
         >>>     # handle exception
         >>>     pass
-        ['5955d325f81eeace502f0a50']
+        [{'errors': [], 'external_id': '1', 'id': None}]
         """
-        response = self._async_create_or_update_documents(content_source_key,
+        return self._async_create_or_update_documents(content_source_key,
                                                           documents)
-        return lmap(lambda x: x['id'], response['document_receipts'])
-
-    def document_receipts(self, document_receipt_ids):
-        """Gets document receipts from their ids.
-        Raises :class:`~swiftype_enterprise.SwiftypeEnterpriseError` if there
-        are any HTTP errors.
-
-        :param document_receipt_ids: Array of document receipt ids.
-        :return: Array of dicts that represent document receipts.
-
-        >>> from swiftype_enterprise import SwiftypeEnterpriseClient
-        >>> from swiftype_enterprise.exceptions import SwiftypeEnterpriseError
-        >>> content_source_key = 'content source key'
-        >>> authorization_token = 'authorization token'
-        >>> client = SwiftypeEnterpriseClient(authorization_token)
-        >>> try:
-        >>>     document_receipts = client.document_receipts(['doc_receipt_1', 'doc_receipt_2'])
-        >>>     print(document_receipts)
-        >>> except SwiftypeEnterpriseError:
-        >>>     # handle exception
-        >>>     pass
-        [{'status': 'complete', 'errors': [], 'external_id': '1', 'id': 'doc_receipt_1', 'links': {'document_receipt': 'http://localhost:3002/api/v1/ent/document_receipts/doc_receipt_1'}}, ...]
-        """
-        return self.swiftype_session.request(
-            'get',
-            'document_receipts/bulk_show.json',
-            params={'ids': ','.join(document_receipt_ids)}
-        )
 
     def destroy_documents(self, content_source_key, external_ids):
         """Destroys documents in a content source by their external_ids.
@@ -172,20 +92,6 @@ class SwiftypeEnterpriseClient:
             content_source_key)
         return self.swiftype_session.request('post', endpoint, json=external_ids)
 
-    @windows_incompatible()
-    def _poll_document_receipt_ids_for_completion(self, document_receipt_ids,
-                                                  timeout=10,
-                                                  delay=0.5):
-        with Timeout(SynchronousDocumentIndexingFailed, seconds=timeout):
-            while True:
-                doc_receipts = self.document_receipts(document_receipt_ids)
-
-                if all(lmap(lambda x: x['status'] != 'pending',
-                                doc_receipts)):
-                    return doc_receipts
-                time.sleep(delay)
-                delay *= 2
-
     def raise_if_document_invalid(self, document):
         missing_required_keys = set(self.REQUIRED_DOCUMENT_TOP_LEVEL_KEYS) - set(document.keys())
         if len(missing_required_keys):
@@ -204,7 +110,7 @@ class SwiftypeEnterpriseClient:
                 "supported fields are {}".format(', '.join(core_top_level_keys)),
                 document
             )
-            
+
     def _async_create_or_update_documents(self, content_source_key, documents):
         for document in documents:
             self.raise_if_document_invalid(document)

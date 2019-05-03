@@ -19,51 +19,8 @@ class TestSwiftypeEnterpriseClient(TestCase):
     def setUp(self):
         self.client = SwiftypeEnterpriseClient('authorization_token')
 
-    def test_document_receipts(self):
-        document_receipt_ids = ['1', '2']
-        stubbed_response = MagicMock(status_code=codes.ok, json=lambda: None)
-        expected_endpoint = "{}/{}".format(self.client.SWIFTYPE_ENTERPRISE_API_BASE_URL,
-                                           'document_receipts/bulk_show.json')
-        def side_effect(*args, **kwargs):
-            self.assertEqual('get', args[0])
-            self.assertEqual(expected_endpoint, args[1])
-            self.assertEqual(kwargs.pop('params').get('ids'),
-                             ','.join(document_receipt_ids))
-            return stubbed_response
 
-        with patch('requests.Session.request', side_effect=side_effect):
-            self.client.document_receipts(document_receipt_ids)
-
-        external_id = 1
-        title, body, url = 'title', 'body', 'url'
-        response_body = [
-            {
-                "external_id" : external_id,
-                "title": title,
-                "body": body,
-                "url": url
-            }
-        ]
-        status = 'pending'
-        document_receipt_id = 'document_receipt_id'
-        response_body = {
-            'batch_link': 'blah',
-            'document_receipts': [
-                {
-                    'id': document_receipt_id,
-                    'external_id': '1',
-                    'status': status,
-                    'document_receipt': 'some url'
-                }
-            ]
-        }
-        stubbed_response = MagicMock(status_code=codes.ok,
-                                     json=lambda: response_body)
-        with patch('requests.Session.request', return_value=stubbed_response):
-            response = self.client.document_receipts([document_receipt_id])
-            self.assertEqual(response, response_body)
-
-    def test_async_index_documents(self):
+    def test_index_documents(self):
         content_source_key = 'key'
         documents = [
             {
@@ -79,8 +36,10 @@ class TestSwiftypeEnterpriseClient(TestCase):
                 'body': ''
             }
         ]
+        response_body = [{'errors': [], 'external_id': '1', 'id': None},
+                                     {'errors': [], 'external_id': '2', 'id': None}]
         stubbed_response = MagicMock(status_code=codes.ok,
-                                     json=lambda: {'document_receipts': []})
+                                     json=lambda: response_body)
         expected_endpoint = "{}/sources/{}/documents/bulk_create"\
             .format(self.client.SWIFTYPE_ENTERPRISE_API_BASE_URL,
                     content_source_key)
@@ -92,25 +51,18 @@ class TestSwiftypeEnterpriseClient(TestCase):
             return stubbed_response
 
         with patch('requests.Session.request', side_effect=side_effect):
-            self.client.async_index_documents(content_source_key, documents)
-
-        document_receipt_ids = ['1', '2']
-        response_body = {
-            'document_receipts': lmap(lambda x: {'id': x}, document_receipt_ids)
-        }
-        stubbed_response = MagicMock(status_code=codes.ok,
-                                     json=lambda: response_body)
+            self.client.index_documents(content_source_key, documents)
 
         with patch('requests.Session.request', return_value=stubbed_response):
             self.assertEqual(
-                self.client.async_index_documents('key', documents),
-                document_receipt_ids)
+                self.client.index_documents('key', documents),
+                response_body)
 
         invalid_document = {
             'bad': 'document'
         }
         with self.assertRaises(InvalidDocument) as _context:
-            self.client.async_index_documents('key', [invalid_document])
+            self.client.index_documents('key', [invalid_document])
 
     def test_raise_if_document_invalid(self):
         valid_document = {
@@ -149,100 +101,6 @@ class TestSwiftypeEnterpriseClient(TestCase):
 
         self.assertEqual(bad_key_context.exception.document, document_with_invalid_key)
         self.assertIn('bad_key', bad_key_context.exception.args[0])
-
-    @skipIf(platform.system() == 'Windows', 'Not Windows compatible')
-    def test_poll_document_receipt_ids_for_completion(self):
-
-        with self.assertRaises(SynchronousDocumentIndexingFailed) as _context:
-
-            def slow_side_effect(*args, **kwargs):
-                time.sleep(20)
-
-            with patch('requests.Session.request', side_effect=slow_side_effect):
-                self.client._poll_document_receipt_ids_for_completion([], 1)
-
-        pending_document_receipts_response = [
-            {
-                'id': 'some_id',
-                'status': 'pending'
-            }
-        ] * 2
-        stubbed_response = MagicMock(status_code=codes.ok,
-                                     json=lambda: pending_document_receipts_response)
-        with self.assertRaises(SynchronousDocumentIndexingFailed) as _context:
-            with patch('requests.Session.request', side_effect=cycle([stubbed_response])):
-                self.client._poll_document_receipt_ids_for_completion([], 1)
-
-        document_receipt_id = 'doc_receipt_id'
-        response_body_1 = [
-            {
-                'id': document_receipt_id,
-                'status': 'pending'
-            }
-        ]
-        response_body_2 = [
-            {
-                'id': document_receipt_id,
-                'status': 'complete'
-            }
-        ]
-        stubbed_response_1 = MagicMock(status_code=codes.ok,
-                                   json=lambda: response_body_1)
-        stubbed_response_2 = MagicMock(status_code=codes.ok,
-                               json=lambda: response_body_2)
-
-        with patch('requests.Session.request', side_effect=[stubbed_response_1, stubbed_response_2]):
-            self.assertEqual(
-                self.client._poll_document_receipt_ids_for_completion(['some_receipt_id'], 2),
-                response_body_2
-            )
-
-    @skipIf(platform.system() == 'Windows', 'Not Windows compatible')
-    def test_index_documents(self):
-        content_source_key = 'key'
-        documents = [
-            {
-                'external_id': 1,
-                'url': '',
-                'title': '',
-                'body': ''
-            }
-        ]
-        bulk_create_docs_response = {
-            'document_receipts': [
-                 {
-                     'id': 'some_id',
-                     'status': 'complete'
-                 }
-             ]
-        }
-        doc_receipts_response = bulk_create_docs_response['document_receipts']
-
-        bulk_create_docs_stubbed_response = MagicMock(status_code=codes.ok,
-                                                      json=lambda: bulk_create_docs_response)
-        doc_receipts_stubbed_response = MagicMock(status_code=codes.ok,
-                                                       json=lambda: doc_receipts_response)
-
-        def endpoint_side_effect(*args, **kwargs):
-            endpoint = args[1]
-            if 'document_receipts/bulk_show' in endpoint:
-                return doc_receipts_stubbed_response
-            elif 'documents/bulk_create' in endpoint:
-                return bulk_create_docs_stubbed_response
-            else:
-                raise Exception("Endpoint not stubbed: {}".format(endpoint))
-
-        # stub documents bulk_create endpoint
-        with patch('requests.Session.request', side_effect=endpoint_side_effect):
-            self.assertEqual(
-                self.client.index_documents(content_source_key, documents),
-                doc_receipts_response
-            )
-
-        with patch('platform.system', return_value='Windows'):
-            with self.assertRaises(OSError) as context:
-                self.client.index_documents(content_source_key, documents)
-            self.assertIn('Please use `async_index_documents` instead', context.exception.args[0])
 
     def test_destroy_documents(self):
         content_source_key = 'key'

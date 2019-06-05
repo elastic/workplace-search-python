@@ -24,20 +24,20 @@ class TestSwiftypeEnterpriseClient(TestCase):
         content_source_key = 'key'
         documents = [
             {
-                'external_id': 1,
+                'id': 1,
                 'url': '',
                 'title': '',
                 'body': ''
             },
             {
-                'external_id': 2,
+                'id': 2,
                 'url': '',
                 'title': '',
                 'body': ''
             }
         ]
-        response_body = [{'errors': [], 'external_id': '1', 'id': None},
-                                     {'errors': [], 'external_id': '2', 'id': None}]
+        response_body = [{'errors': [], 'id': '1', 'id': None},
+                                     {'errors': [], 'id': '2', 'id': None}]
         stubbed_response = MagicMock(status_code=codes.ok,
                                      json=lambda: response_body)
         expected_endpoint = "{}/sources/{}/documents/bulk_create"\
@@ -66,7 +66,7 @@ class TestSwiftypeEnterpriseClient(TestCase):
 
     def test_raise_if_document_invalid(self):
         valid_document = {
-            'external_id': 'external_id',
+            'id': 'id',
             'url': 'url',
             'title': 'title',
             'body': 'body',
@@ -76,7 +76,7 @@ class TestSwiftypeEnterpriseClient(TestCase):
         self.client.raise_if_document_invalid(valid_document)
 
         invalid_document = {
-            'external_id': 'external_id',
+            'id': 'id',
             'title': 'title',
             'body': 'body',
             'created_at': 'created_at'
@@ -89,7 +89,7 @@ class TestSwiftypeEnterpriseClient(TestCase):
         self.assertIn('url', context.exception.args[0])
 
         document_with_invalid_key = {
-            'external_id': 'external_id',
+            'id': 'id',
             'url': 'url',
             'title': 'title',
             'body': 'body',
@@ -104,10 +104,10 @@ class TestSwiftypeEnterpriseClient(TestCase):
 
     def test_destroy_documents(self):
         content_source_key = 'key'
-        external_ids = ['some_id']
+        ids = ['some_id']
         response_body = [
             {
-                'external_id': '1',
+                'id': '1',
                 'success': True
             }
         ]
@@ -115,6 +115,6 @@ class TestSwiftypeEnterpriseClient(TestCase):
                                      json=lambda: response_body)
         with patch('requests.Session.request', return_value=stubbed_response):
             self.assertEqual(
-                self.client.destroy_documents(content_source_key, external_ids),
+                self.client.destroy_documents(content_source_key, ids),
                 response_body
             )

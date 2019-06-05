@@ -11,7 +11,7 @@ class SwiftypeEnterpriseClient:
     SWIFTYPE_ENTERPRISE_API_BASE_URL = 'https://api.swiftype.com/api/v1/ent'
 
     REQUIRED_DOCUMENT_TOP_LEVEL_KEYS = [
-        'external_id',
+        'id',
         'url',
         'title',
         'body'
@@ -47,7 +47,7 @@ class SwiftypeEnterpriseClient:
         >>> client = SwiftypeEnterpriseClient(authorization_token)
         >>> documents = [
             {
-                'external_id': '1',
+                'id': '1',
                 'url': 'https://github.com/swiftype/swiftype-enterprise-python',
                 'title': 'Swiftype Enterprise Python Github',
                 'body': 'A descriptive body'
@@ -59,21 +59,21 @@ class SwiftypeEnterpriseClient:
         >>> except SwiftypeEnterpriseError:
         >>>     # handle exception
         >>>     pass
-        [{'errors': [], 'external_id': '1', 'id': None}]
+        [{'errors': [], 'id': '1', 'id': None}]
         """
         return self._async_create_or_update_documents(content_source_key,
                                                           documents)
 
-    def destroy_documents(self, content_source_key, external_ids):
-        """Destroys documents in a content source by their external_ids.
+    def destroy_documents(self, content_source_key, ids):
+        """Destroys documents in a content source by their ids.
         Raises :class:`~swiftype_enterprise.NonExistentRecord` if the
         content_source_key is malformed or invalid. Raises
         :class:`~swiftype_enterprise.SwiftypeEnterpriseError` if there are any
         HTTP errors.
 
         :param content_source_key: Key for the content source.
-        :param external_ids: Array of document external ids to be destroyed.
-        :return: Array of result dicts, with keys of `external_id` and `status`
+        :param ids: Array of document ids to be destroyed.
+        :return: Array of result dicts, with keys of `id` and `status`
 
         >>> from swiftype_enterprise import SwiftypeEnterpriseClient
         >>> from swiftype_enterprise.exceptions import SwiftypeEnterpriseError
@@ -86,11 +86,11 @@ class SwiftypeEnterpriseClient:
         >>> except SwiftypeEnterpriseError:
         >>>     # handle exception
         >>>     pass
-        [{"external_id": '1',"success": True}]
+        [{"id": '1',"success": True}]
         """
         endpoint = "sources/{}/documents/bulk_destroy".format(
             content_source_key)
-        return self.swiftype_session.request('post', endpoint, json=external_ids)
+        return self.swiftype_session.request('post', endpoint, json=ids)
 
     def raise_if_document_invalid(self, document):
         missing_required_keys = set(self.REQUIRED_DOCUMENT_TOP_LEVEL_KEYS) - set(document.keys())

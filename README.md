@@ -45,7 +45,7 @@ Indexing a document into a custom content source:
   client = SwiftypeEnterpriseClient(authorization_token)
   documents = [
     {
-      'external_id': '1234',
+      'id': '1234',
       'url': 'https://github.com/swiftype/swiftype-enterprise-python',
       'title': 'Swiftype Enterprise Python Github',
       'body': 'A descriptive body, with document contents and metadata'

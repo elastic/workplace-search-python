@@ -8,7 +8,7 @@ from future.utils import lmap
 
 class SwiftypeEnterpriseClient:
 
-    SWIFTYPE_ENTERPRISE_API_BASE_URL = 'https://api.swiftype.com/api/v1/ent'
+    SWIFTYPE_ENTERPRISE_API_BASE_URL = 'http://localhost:3002/api/v1/ent'
 
     REQUIRED_DOCUMENT_TOP_LEVEL_KEYS = [
         'id',

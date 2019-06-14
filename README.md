@@ -59,6 +59,12 @@ Indexing a document into a custom content source:
     pass
 ```
 
+### Change API endpoint
+
+```python
+client = SwiftypeEnterpriseClient(authorization_token, "https://your-server.example.com/api/v1/ent")
+```
+
 ## FAQ 🔮
 
 ### Where do I report issues with the client?

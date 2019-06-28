@@ -1,7 +1,6 @@
 import signal
 import platform
 from functools import wraps
-from .exceptions import SynchronousDocumentIndexingFailed
 
 class Timeout:
 

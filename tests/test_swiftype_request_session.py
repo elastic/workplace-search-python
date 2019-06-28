@@ -9,7 +9,7 @@ except ImportError:
 
 import swiftype_enterprise
 from swiftype_enterprise.swiftype_request_session import SwiftypeRequestSession
-from swiftype_enterprise.exceptions import InvalidCredentials, SynchronousDocumentIndexingFailed, InvalidDocument
+from swiftype_enterprise.exceptions import InvalidCredentials
 
 
 class TestSwiftypeRequestSession(TestCase):

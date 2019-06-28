@@ -17,13 +17,3 @@ class BadRequest(SwiftypeEnterpriseError):
 
 class Forbidden(SwiftypeEnterpriseError):
     """Raised when http forbidden"""
-
-class SynchronousDocumentIndexingFailed(SwiftypeEnterpriseError):
-    """Raised when synchronous indexing of documents takes too long"""
-
-class InvalidDocument(SwiftypeEnterpriseError):
-    """When a document has a non-accepted field or is missing a required field"""
-
-    def __init__(self, message, document):
-        super(SwiftypeEnterpriseError, self).__init__(message)
-        self.document = document

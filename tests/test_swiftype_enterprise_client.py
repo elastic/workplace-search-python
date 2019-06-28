@@ -11,7 +11,6 @@ except ImportError:
     from mock import MagicMock, patch
 
 from swiftype_enterprise.swiftype_enterprise_client import SwiftypeEnterpriseClient
-from swiftype_enterprise.exceptions import SynchronousDocumentIndexingFailed, InvalidDocument
 
 class TestSwiftypeEnterpriseClient(TestCase):
     dummy_authorization_token = 'authorization_token'
@@ -57,50 +56,6 @@ class TestSwiftypeEnterpriseClient(TestCase):
             self.assertEqual(
                 self.client.index_documents('key', documents),
                 response_body)
-
-        invalid_document = {
-            'bad': 'document'
-        }
-        with self.assertRaises(InvalidDocument) as _context:
-            self.client.index_documents('key', [invalid_document])
-
-    def test_raise_if_document_invalid(self):
-        valid_document = {
-            'id': 'id',
-            'url': 'url',
-            'title': 'title',
-            'body': 'body',
-            'created_at': 'created_at'
-        }
-
-        self.client.raise_if_document_invalid(valid_document)
-
-        invalid_document = {
-            'id': 'id',
-            'title': 'title',
-            'body': 'body',
-            'created_at': 'created_at'
-        }
-
-        with self.assertRaises(InvalidDocument) as context:
-            self.client.raise_if_document_invalid(invalid_document)
-
-        self.assertEqual(context.exception.document, invalid_document)
-        self.assertIn('url', context.exception.args[0])
-
-        document_with_invalid_key = {
-            'id': 'id',
-            'url': 'url',
-            'title': 'title',
-            'body': 'body',
-            'bad_key': 'bad_key'
-        }
-
-        with self.assertRaises(InvalidDocument) as bad_key_context:
-            self.client.raise_if_document_invalid(document_with_invalid_key)
-
-        self.assertEqual(bad_key_context.exception.document, document_with_invalid_key)
-        self.assertIn('bad_key', bad_key_context.exception.args[0])
 
     def test_destroy_documents(self):
         content_source_key = 'key'

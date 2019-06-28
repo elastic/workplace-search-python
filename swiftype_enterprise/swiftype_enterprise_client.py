@@ -1,5 +1,4 @@
 import time
-from .exceptions import InvalidDocument, SynchronousDocumentIndexingFailed
 from .swiftype_request_session import SwiftypeRequestSession
 from .utils import Timeout, windows_incompatible
 from future.utils import lmap
@@ -9,19 +8,6 @@ from future.utils import lmap
 class SwiftypeEnterpriseClient:
 
     SWIFTYPE_ENTERPRISE_API_BASE_URL = 'http://localhost:3002/api/v1/ent'
-
-    REQUIRED_DOCUMENT_TOP_LEVEL_KEYS = [
-        'id',
-        'url',
-        'title',
-        'body'
-    ]
-
-    OPTIONAL_DOCUMENT_TOP_LEVEL_KEYS = [
-        'created_at',
-        'updated_at',
-        'type'
-    ]
 
     def __init__(self, authorization_token, base_url=SWIFTYPE_ENTERPRISE_API_BASE_URL):
         self.authorization_token = authorization_token
@@ -33,8 +19,7 @@ class SwiftypeEnterpriseClient:
         Raises :class:`~swiftype_enterprise.NonExistentRecord` if the
         content_source_key is malformed or invalid. Raises
         :class:`~swiftype_enterprise.SwiftypeEnterpriseError` if there are any
-        HTTP errors. Raises :class:`~swiftype_enterprise.InvalidDocument` when
-        a document is missing required fields or contains unsupported fields.
+        HTTP errors.
 
         :param content_source_key: Key for the content source.
         :param documents: Array of documents to be indexed.
@@ -92,27 +77,7 @@ class SwiftypeEnterpriseClient:
             content_source_key)
         return self.swiftype_session.request('post', endpoint, json=ids)
 
-    def raise_if_document_invalid(self, document):
-        missing_required_keys = set(self.REQUIRED_DOCUMENT_TOP_LEVEL_KEYS) - set(document.keys())
-        if len(missing_required_keys):
-            raise InvalidDocument(
-                "Missing required fields: {}".format(','.join(missing_required_keys)),
-                document
-            )
-
-        core_top_level_keys = self.REQUIRED_DOCUMENT_TOP_LEVEL_KEYS + self.OPTIONAL_DOCUMENT_TOP_LEVEL_KEYS
-        invalid_fields = set(document.keys()) - set(core_top_level_keys)
-        if len(invalid_fields):
-            raise InvalidDocument(
-                "Invalid fields in document: {}".format(
-                    ', '.join(invalid_fields)
-                ) + ', ' +
-                "supported fields are {}".format(', '.join(core_top_level_keys)),
-                document
-            )
 
     def _async_create_or_update_documents(self, content_source_key, documents):
-        for document in documents:
-            self.raise_if_document_invalid(document)
         endpoint = "sources/{}/documents/bulk_create".format(content_source_key)
         return self.swiftype_session.request('post', endpoint, json=documents)

@@ -39,7 +39,6 @@ Indexing a document into a custom content source:
 
 ```python
   from swiftype_enterprise import SwiftypeEnterpriseClient
-  from swiftype_enterprise.exceptions import SynchronousDocumentIndexingFailed
   content_source_key = 'content source key'
   authorization_token = 'authorization token'
   client = SwiftypeEnterpriseClient(authorization_token)
@@ -51,12 +50,9 @@ Indexing a document into a custom content source:
       'body': 'A descriptive body, with document contents and metadata'
     }
   ]
-  try:
-    document_results = client.index_documents(content_source_key, documents, timeout=10, delay=2)
-    print(document_results)
-  except SynchronousDocumentIndexingFailed:
-    # Timed out before documents could finish indexing
-    pass
+
+  document_results = client.index_documents(content_source_key, documents, timeout=10, delay=2)
+  print(document_results)
 ```
 
 ### Change API endpoint

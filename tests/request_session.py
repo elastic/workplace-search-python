@@ -31,13 +31,15 @@ class TestRequestSession(TestCase):
         headers_to_check = {
             k: v
             for k, v in iteritems(self.session.session.headers)
-            if k in ['Authorization']
+            if k in ['Authorization', 'X-Swiftype-Client', 'X-Swiftype-Client-Version']
         }
         version = elastic_enterprise_search.__version__
         self.assertEqual(
             headers_to_check,
             {
                 'Authorization': 'Bearer {}'.format(self.dummy_authorization_token),
+                'X-Swiftype-Client': 'elastic-enterprise-search-python',
+                'X-Swiftype-Client-Version': '0.1.0',
             }
         )
 

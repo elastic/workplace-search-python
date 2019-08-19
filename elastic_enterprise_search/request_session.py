@@ -12,6 +12,8 @@ class RequestSession:
 
         headers = {
             'Authorization': "Bearer {}".format(self.authorization_token),
+            'X-Swiftype-Client': 'elastic-enterprise-search-python',
+            'X-Swiftype-Client-Version': elastic_enterprise_search.__version__,
         }
         self.session.headers.update(headers)
 

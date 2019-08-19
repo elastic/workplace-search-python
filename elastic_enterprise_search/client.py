@@ -1,5 +1,5 @@
 import time
-from .swiftype_request_session import SwiftypeRequestSession
+from .request_session import SwiftypeRequestSession
 from .utils import Timeout, windows_incompatible
 from future.utils import lmap
 
@@ -16,17 +16,17 @@ class SwiftypeEnterpriseClient:
 
     def index_documents(self, content_source_key, documents, **kwargs):
         """Index a batch of documents in a content source.
-        Raises :class:`~swiftype_enterprise.NonExistentRecord` if the
+        Raises :class:`~elastic_enterprise_search.NonExistentRecord` if the
         content_source_key is malformed or invalid. Raises
-        :class:`~swiftype_enterprise.SwiftypeEnterpriseError` if there are any
+        :class:`~elastic_enterprise_search.SwiftypeEnterpriseError` if there are any
         HTTP errors.
 
         :param content_source_key: Key for the content source.
         :param documents: Array of documents to be indexed.
         :return: Array of document indexing results.
 
-        >>> from swiftype_enterprise import SwiftypeEnterpriseClient
-        >>> from swiftype_enterprise.exceptions import SwiftypeEnterpriseError
+        >>> from elastic_enterprise_search import SwiftypeEnterpriseClient
+        >>> from elastic_enterprise_search.exceptions import SwiftypeEnterpriseError
         >>> content_source_key = 'content source key'
         >>> authorization_token = 'authorization token'
         >>> client = SwiftypeEnterpriseClient(authorization_token)
@@ -51,17 +51,17 @@ class SwiftypeEnterpriseClient:
 
     def destroy_documents(self, content_source_key, ids):
         """Destroys documents in a content source by their ids.
-        Raises :class:`~swiftype_enterprise.NonExistentRecord` if the
+        Raises :class:`~elastic_enterprise_search.NonExistentRecord` if the
         content_source_key is malformed or invalid. Raises
-        :class:`~swiftype_enterprise.SwiftypeEnterpriseError` if there are any
+        :class:`~elastic_enterprise_search.SwiftypeEnterpriseError` if there are any
         HTTP errors.
 
         :param content_source_key: Key for the content source.
         :param ids: Array of document ids to be destroyed.
         :return: Array of result dicts, with keys of `id` and `status`
 
-        >>> from swiftype_enterprise import SwiftypeEnterpriseClient
-        >>> from swiftype_enterprise.exceptions import SwiftypeEnterpriseError
+        >>> from elastic_enterprise_search import SwiftypeEnterpriseClient
+        >>> from elastic_enterprise_search.exceptions import SwiftypeEnterpriseError
         >>> content_source_key = 'content source key'
         >>> authorization_token = 'authorization token'
         >>> client = SwiftypeEnterpriseClient(authorization_token)

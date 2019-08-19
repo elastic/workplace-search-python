@@ -10,7 +10,7 @@ try:  # python 3.3+
 except ImportError:
     from mock import MagicMock, patch
 
-from swiftype_enterprise.swiftype_enterprise_client import SwiftypeEnterpriseClient
+from elastic_enterprise_search.client import SwiftypeEnterpriseClient
 
 class TestSwiftypeEnterpriseClient(TestCase):
     dummy_authorization_token = 'authorization_token'

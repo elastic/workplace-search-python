@@ -7,9 +7,9 @@ try:  # python 3.3+
 except ImportError:
     from mock import MagicMock, patch
 
-import swiftype_enterprise
-from swiftype_enterprise.swiftype_request_session import SwiftypeRequestSession
-from swiftype_enterprise.exceptions import InvalidCredentials
+import elastic_enterprise_search
+from elastic_enterprise_search.request_session import SwiftypeRequestSession
+from elastic_enterprise_search.exceptions import InvalidCredentials
 
 
 class TestSwiftypeRequestSession(TestCase):
@@ -33,7 +33,7 @@ class TestSwiftypeRequestSession(TestCase):
             for k, v in iteritems(self.swiftype_session.session.headers)
             if k in ['Authorization', 'User-Agent']
         }
-        version = swiftype_enterprise.__version__
+        version = elastic_enterprise_search.__version__
         self.assertEqual(
             headers_to_check,
             {

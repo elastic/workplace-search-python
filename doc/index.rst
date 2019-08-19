@@ -17,7 +17,7 @@ the docs are on `ReadTheDocs <https://swiftype_enterprise.readthedocs.io/>`_.
 
 Install with::
 
-    $ python -m pip install swiftype_enterprise
+    $ python -m pip install elastic_enterprise_search
 
 Classes
 -------

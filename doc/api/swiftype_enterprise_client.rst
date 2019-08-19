@@ -1,7 +1,7 @@
-:class:`~swiftype_enterprise.SwiftypeEnterpriseClient`
+:class:`~elastic_enterprise_search.SwiftypeEnterpriseClient`
 ======================================================
 
-.. currentmodule:: swiftype_enterprise
+.. currentmodule:: elastic_enterprise_search
 
 .. autoclass:: SwiftypeEnterpriseClient
   :members:

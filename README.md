@@ -22,7 +22,7 @@ Installed with
 `pip <http://pypi.python.org/pypi/pip>`:
 
 ```bash
-$ python -m pip install swiftype_enterprise
+$ python -m pip install elastic_enterprise_search
 ```
 
 You can also download and install the project source:
@@ -38,7 +38,7 @@ Retrieve your access token and a content source key after creating your content 
 Indexing a document into a custom content source:
 
 ```python
-  from swiftype_enterprise import SwiftypeEnterpriseClient
+  from elastic_enterprise_search import SwiftypeEnterpriseClient
   content_source_key = 'content source key'
   authorization_token = 'authorization token'
   client = SwiftypeEnterpriseClient(authorization_token)

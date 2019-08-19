@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/swiftype/swiftype-enterprise-python/blob/master/logo-enterprise-search.png?raw=true" alt="Elastic Enterprise Search Logo"></p>
+<p align="center"><img src="https://github.com/elastic/enterprise-search-python/blob/master/logo-enterprise-search.png?raw=true" alt="Elastic Enterprise Search Logo"></p>
 
 > A first-party Python client for [Elastic Enterprise Search](https://www.elastic.co/solutions/enterprise-search).
 
@@ -38,15 +38,15 @@ Retrieve your access token and a content source key after creating your content 
 Indexing a document into a custom content source:
 
 ```python
-  from elastic_enterprise_search import SwiftypeEnterpriseClient
+  from elastic_enterprise_search import Client
   content_source_key = 'content source key'
   authorization_token = 'authorization token'
-  client = SwiftypeEnterpriseClient(authorization_token)
+  client = Client(authorization_token)
   documents = [
     {
       'id': '1234',
-      'url': 'https://github.com/swiftype/swiftype-enterprise-python',
-      'title': 'Swiftype Enterprise Python Github',
+      'url': 'https://github.com/elastic/enterprise-search-python',
+      'title': 'Elastic App Search Official Python Client',
       'body': 'A descriptive body, with document contents and metadata'
     }
   ]
@@ -58,24 +58,24 @@ Indexing a document into a custom content source:
 ### Change API endpoint
 
 ```python
-client = SwiftypeEnterpriseClient(authorization_token, "https://your-server.example.com/api/v1/ent")
+client = Client(authorization_token, "https://your-server.example.com/api/v1/ent")
 ```
 
 ## FAQ 🔮
 
 ### Where do I report issues with the client?
 
-If something is not working as expected, please open an [issue](https://github.com/swiftype/swiftype-enterprise-python/issues/new).
+If something is not working as expected, please open an [issue](https://github.com/elastic/enterprise-search-python/issues/new).
 
 ## Contribute 🚀
 
 We welcome contributors to the project. Before you begin, a couple notes...
 
-+ Before opening a pull request, please create an issue to [discuss the scope of your proposal](https://github.com/swiftype/swiftype-enterprise-python/issues).
++ Before opening a pull request, please create an issue to [discuss the scope of your proposal](https://github.com/elastic/enterprise-search-python/issues).
 + Please write simple code and concise documentation, when appropriate.
 
 ## License 📗
 
-[MIT](https://github.com/swiftype/swiftype-enterprise-python/blob/master/LICENSE) © [Elastic](https://github.com/elastic)
+[MIT](https://github.com/elastic/enterprise-search-python/blob/master/LICENSE) © [Elastic](https://github.com/elastic)
 
-Thank you to all the [contributors](https://github.com/swiftype/swiftype-enterprise-python/graphs/contributors)!
+Thank you to all the [contributors](https://github.com/elastic/enterprise-search-python/graphs/contributors)!

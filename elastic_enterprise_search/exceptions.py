@@ -1,19 +1,19 @@
-"""Exceptions raised by Swiftype Enterprise Client."""
+"""Exceptions raised by Elastic Enterprise Search Client."""
 
-class SwiftypeEnterpriseError(Exception):
-    """Base class for all Swiftype Enterprise errors."""
+class EnterpriseSearchError(Exception):
+    """Base class for all Enterprise Search errors."""
 
-class InvalidCredentials(SwiftypeEnterpriseError):
+class InvalidCredentials(EnterpriseSearchError):
     """Raised when request cannot authenticate"""
 
-class NonExistentRecord(SwiftypeEnterpriseError):
+class NonExistentRecord(EnterpriseSearchError):
     """Raised when record does not exist"""
 
-class RecordAlreadyExists(SwiftypeEnterpriseError):
+class RecordAlreadyExists(EnterpriseSearchError):
     """Raised when record already exists"""
 
-class BadRequest(SwiftypeEnterpriseError):
+class BadRequest(EnterpriseSearchError):
     """Raised when bad request"""
 
-class Forbidden(SwiftypeEnterpriseError):
+class Forbidden(EnterpriseSearchError):
     """Raised when http forbidden"""

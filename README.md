@@ -1,5 +1,7 @@
 <p align="center"><img src="https://github.com/elastic/enterprise-search-python/blob/master/logo-enterprise-search.png?raw=true" alt="Elastic Enterprise Search Logo"></p>
 
+<p align="center"><a href="https://circleci.com/gh/elastic/enterprise-search-python"><img src="https://circleci.com/gh/elastic/enterprise-search-python.svg" alt="CircleCI build"></a>
+
 > A first-party Python client for [Elastic Enterprise Search](https://www.elastic.co/solutions/enterprise-search).
 
 ## Contents

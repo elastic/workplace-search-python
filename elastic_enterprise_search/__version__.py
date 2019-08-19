@@ -1,0 +1,6 @@
+__title__ = 'elastic_enterprise_search'
+__description__ = 'An API client for Elastic Enterprise Search'
+__url__ = 'https://github.com/elastic/enterprise-search-python'
+__version__ = '0.1.0'
+__author__ = 'Elastic'
+__author_email__ = 'support@elastic.co'

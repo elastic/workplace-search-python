@@ -1,9 +1,9 @@
 import requests
-import swiftype_enterprise
+import elastic_enterprise_search
 from .exceptions import InvalidCredentials, NonExistentRecord, RecordAlreadyExists, BadRequest, Forbidden
 
 
-class SwiftypeRequestSession:
+class RequestSession:
 
     def __init__(self, authorization_token, base_url):
         self.authorization_token = authorization_token
@@ -12,7 +12,8 @@ class SwiftypeRequestSession:
 
         headers = {
             'Authorization': "Bearer {}".format(self.authorization_token),
-            'User-Agent': "swiftype-enterprise-python/{}".format(swiftype_enterprise.__version__)
+            'X-Swiftype-Client': 'elastic-enterprise-search-python',
+            'X-Swiftype-Client-Version': elastic_enterprise_search.__version__,
         }
         self.session.headers.update(headers)
 

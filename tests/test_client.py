@@ -10,13 +10,13 @@ try:  # python 3.3+
 except ImportError:
     from mock import MagicMock, patch
 
-from swiftype_enterprise.swiftype_enterprise_client import SwiftypeEnterpriseClient
+from elastic_enterprise_search.client import Client
 
-class TestSwiftypeEnterpriseClient(TestCase):
+class TestClient(TestCase):
     dummy_authorization_token = 'authorization_token'
 
     def setUp(self):
-        self.client = SwiftypeEnterpriseClient('authorization_token')
+        self.client = Client('authorization_token')
 
 
     def test_index_documents(self):
@@ -40,7 +40,7 @@ class TestSwiftypeEnterpriseClient(TestCase):
         stubbed_response = MagicMock(status_code=codes.ok,
                                      json=lambda: response_body)
         expected_endpoint = "{}/sources/{}/documents/bulk_create"\
-            .format(self.client.SWIFTYPE_ENTERPRISE_API_BASE_URL,
+            .format(self.client.ELASTIC_ENTERPRISE_SEARCH_BASE_URL,
                     content_source_key)
 
         def side_effect(*args, **kwargs):

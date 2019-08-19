@@ -20,7 +20,7 @@ finally:
 
 here = path.abspath(path.dirname(__file__))
 about = {}
-with open(path.join(here, 'swiftype_enterprise', '__version__.py'), 'r', 'utf-8') as f:
+with open(path.join(here, 'elastic_enterprise_search', '__version__.py'), 'r', 'utf-8') as f:
     exec(f.read(), about)
 
 setup(
@@ -32,11 +32,11 @@ setup(
     url=about['__url__'],
     author=about['__author__'],
     author_email=about['__author_email__'],
-    license='MIT',
+    license='Apache 2.0',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
+        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
@@ -44,21 +44,22 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
     ],
-    keywords='swiftype enterprise search api',
+    keywords='elastic enterprise search api',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     install_requires=[
         'requests',
         'future'
     ],
-    extras_require={
-        'test': ['mock'],
-    },
+    tests_require=[
+        'mock',
+        'future'
+    ],
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
     # pip to create the appropriate form of executable for the target platform.
     entry_points={
         'console_scripts': [
-            'swiftype_enterprise=swiftype_enterprise:main',
+            'elastic_enterprise_search=elastic_enterprise_search:main',
         ],
     },
     test_suite='tests'

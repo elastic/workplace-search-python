@@ -48,7 +48,7 @@ Indexing a document into a custom content source:
     {
       'id': '1234',
       'url': 'https://github.com/elastic/enterprise-search-python',
-      'title': 'Elastic App Search Official Python Client',
+      'title': 'Elastic Enterprise Search Official Python Client',
       'body': 'A descriptive body, with document contents and metadata'
     }
   ]

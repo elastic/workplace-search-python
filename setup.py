@@ -1,9 +1,15 @@
 from setuptools import setup, find_packages
+from setuptools.command.install import install
 from codecs import open
 from os import path
 from unittest import TestLoader
 
 here = path.abspath(path.dirname(__file__))
+
+class PostInstallMessage(install):
+    def run(self):
+        print "DEPRECATION WARNING: The swiftype_enterprise package has been deprecated and replaced by elastic_enterprise_search"
+        install.run(self)
 
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
@@ -61,5 +67,8 @@ setup(
             'swiftype_enterprise=swiftype_enterprise:main',
         ],
     },
-    test_suite='tests'
+    test_suite='tests',
+    cmdclass={
+        'install': PostInstallMessage,
+    }
 )

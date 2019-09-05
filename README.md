@@ -1,5 +1,9 @@
 <p align="center"><img src="https://github.com/swiftype/swiftype-enterprise-python/blob/master/logo-enterprise-search.png?raw=true" alt="Elastic Enterprise Search Logo"></p>
 
+> **⚠️ This client is deprecated ⚠️**
+>
+> **swiftype_enterprise has been replaced by elastic_enterprise_search. Thank you! - Elastic**
+
 > A first-party Python client for [Elastic Enterprise Search](https://www.elastic.co/solutions/enterprise-search).
 
 ## Contents

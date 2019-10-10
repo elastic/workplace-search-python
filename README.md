@@ -53,7 +53,7 @@ Indexing a document into a custom content source:
     }
   ]
 
-  document_results = client.index_documents(content_source_key, documents, timeout=10, delay=2)
+  document_results = client.documents.index_documents(content_source_key, documents)
   print(document_results)
 ```
 

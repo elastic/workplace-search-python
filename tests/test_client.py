@@ -35,41 +35,26 @@ class TestClient(TestCase):
                 'body': ''
             }
         ]
-        response_body = [{'errors': [], 'id': '1', 'id': None},
-                                     {'errors': [], 'id': '2', 'id': None}]
-        stubbed_response = MagicMock(status_code=codes.ok,
-                                     json=lambda: response_body)
-        expected_endpoint = "{}/sources/{}/documents/bulk_create"\
-            .format(self.client.ELASTIC_ENTERPRISE_SEARCH_BASE_URL,
-                    content_source_key)
+        response = {}
 
-        def side_effect(*args, **kwargs):
-            self.assertEqual('post', args[0])
-            self.assertEqual(expected_endpoint, args[1])
-            self.assertEqual(kwargs.pop('json'), documents)
-            return stubbed_response
-
-        with patch('requests.Session.request', side_effect=side_effect):
-            self.client.index_documents(content_source_key, documents)
-
-        with patch('requests.Session.request', return_value=stubbed_response):
-            self.assertEqual(
-                self.client.index_documents('key', documents),
-                response_body)
+        # Test that index_documents proxies through to Documents service.
+        with patch('elastic_enterprise_search.apis.documents.Documents.index_documents', return_value=response) as index_documents:
+            return_value = self.client.index_documents(content_source_key, documents)
+            index_documents.assert_called_with(content_source_key, documents)
+            self.assertEqual(return_value, response)
 
     def test_destroy_documents(self):
         content_source_key = 'key'
         ids = ['some_id']
-        response_body = [
+        response = [
             {
                 'id': '1',
                 'success': True
             }
         ]
-        stubbed_response = MagicMock(status_code=codes.ok,
-                                     json=lambda: response_body)
-        with patch('requests.Session.request', return_value=stubbed_response):
-            self.assertEqual(
-                self.client.destroy_documents(content_source_key, ids),
-                response_body
-            )
+
+        # Test that delete_documents proxies through to Documents service.
+        with patch('elastic_enterprise_search.apis.documents.Documents.delete_documents', return_value=response) as delete_documents:
+            return_value = self.client.destroy_documents(content_source_key, ids)
+            delete_documents.assert_called_with(content_source_key, ids)
+            self.assertEqual(return_value, response)

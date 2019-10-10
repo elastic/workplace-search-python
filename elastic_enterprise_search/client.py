@@ -13,11 +13,3 @@ class Client:
         self.session = RequestSession(self.authorization_token, self.base_url)
 
         self.documents = Documents(self.session)
-
-    def index_documents(self, content_source_key, documents):
-        """Deprecated - Use client.documents.index_documents instead."""
-        return self.documents.index_documents(content_source_key, documents)
-
-    def destroy_documents(self, content_source_key, ids):
-        """Deprecated - Use client.documents.delete_documents instead."""
-        return self.documents.delete_documents(content_source_key, ids)

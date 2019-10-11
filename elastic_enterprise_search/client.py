@@ -1,7 +1,9 @@
 from .request_session import RequestSession
 from .apis.documents import Documents
+from .apis.permissions import Permissions
 
 """API client for Elastic Enterprise Search"""
+
 
 class Client:
 
@@ -13,3 +15,4 @@ class Client:
         self.session = RequestSession(self.authorization_token, self.base_url)
 
         self.documents = Documents(self.session)
+        self.permissions = Permissions(self.session)

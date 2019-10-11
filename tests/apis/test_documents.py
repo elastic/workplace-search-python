@@ -6,14 +6,16 @@ try:  # python 3.3+
 except ImportError:
     from mock import MagicMock, patch
 
+from .mock_endpoint import mock_endpoint
 from elastic_enterprise_search.client import Client
+from .fixtures.index_documents_response import *
+from .fixtures.delete_documents_response import *
 
-class TestClient(TestCase):
-    dummy_authorization_token = 'authorization_token'
+
+class TestDocuments(TestCase):
 
     def setUp(self):
         self.client = Client('authorization_token')
-
 
     def test_index_documents(self):
         content_source_key = 'key'
@@ -31,41 +33,42 @@ class TestClient(TestCase):
                 'body': ''
             }
         ]
-        response_body = [{'errors': [], 'id': '1', 'id': None},
-                                     {'errors': [], 'id': '2', 'id': None}]
-        stubbed_response = MagicMock(status_code=codes.ok,
-                                     json=lambda: response_body)
-        expected_endpoint = "{}/sources/{}/documents/bulk_create"\
-            .format(self.client.ELASTIC_ENTERPRISE_SEARCH_BASE_URL,
-                    content_source_key)
 
-        def side_effect(*args, **kwargs):
-            self.assertEqual('post', args[0])
-            self.assertEqual(expected_endpoint, args[1])
-            self.assertEqual(kwargs.pop('json'), documents)
-            return stubbed_response
+        def test_request(request_properties):
+            actual_json = request_properties.pop('json')
+            expected_json = documents
+            self.assertEqual(actual_json, expected_json)
 
-        with patch('requests.Session.request', side_effect=side_effect):
-            self.client.documents.index_documents(content_source_key, documents)
+        mocked_endpoint = mock_endpoint(
+            'post',
+            'sources/{}/documents/bulk_create'.format(content_source_key),
+            index_documents_response,
+            test_request
+        )
 
-        with patch('requests.Session.request', return_value=stubbed_response):
-            self.assertEqual(
-                self.client.documents.index_documents('key', documents),
-                response_body)
+        with patch(**mocked_endpoint):
+            response = self.client.documents.index_documents('key', documents)
+            self.assertEqual(response.__len__(), 2)
 
     def test_delete_documents(self):
         content_source_key = 'key'
-        ids = ['some_id']
-        response_body = [
-            {
-                'id': '1',
-                'success': True
-            }
-        ]
-        stubbed_response = MagicMock(status_code=codes.ok,
-                                     json=lambda: response_body)
-        with patch('requests.Session.request', return_value=stubbed_response):
+        ids = ['1']
+
+        def test_request(request_properties):
+            actual_json = request_properties.pop('json')
+            expected_json = ids
+            self.assertEqual(actual_json, expected_json)
+
+        mocked_endpoint = mock_endpoint(
+            'post',
+            'sources/{}/documents/bulk_destroy'.format(content_source_key),
+            delete_documents_response,
+            test_request
+        )
+
+        with patch(**mocked_endpoint):
             self.assertEqual(
-                self.client.documents.delete_documents(content_source_key, ids),
-                response_body
+                self.client.documents.delete_documents(
+                    content_source_key, ids),
+                delete_documents_response
             )

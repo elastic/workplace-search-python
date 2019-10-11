@@ -61,7 +61,7 @@ class TestPermissions(TestCase):
             response = self.client.permissions.list_all_permissions(
                 content_source_key, current=page_current, size=page_size)
 
-            self.assertEqual(response['results'].__len__(), 2)
+            self.assertEqual(response['results'].__len__(), 0)
             self.assertEqual(response['meta']['page']['current'], 2)
             self.assertEqual(response['meta']['page']['size'], 20)
 

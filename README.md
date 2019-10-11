@@ -35,15 +35,32 @@ $ python setup.py install
 
 ## Usage
 
+### Creating a new Client
+
+```python
+  from elastic_enterprise_search import Client
+  authorization_token = 'authorization token'
+  client = Client(authorization_token)
+```
+
 Retrieve your access token and a content source key after creating your content source.
+
+### Change API endpoint
+
+```python
+client = Client(authorization_token, "https://your-server.example.com/api/v1/ent")
+```
+
+### Custom Source Documents
+
+Document API features are found in the `client.documents` module.
+
+#### Indexing Documents
 
 Indexing a document into a custom content source:
 
 ```python
-  from elastic_enterprise_search import Client
   content_source_key = 'content source key'
-  authorization_token = 'authorization token'
-  client = Client(authorization_token)
   documents = [
     {
       'id': '1234',
@@ -53,14 +70,77 @@ Indexing a document into a custom content source:
     }
   ]
 
-  document_results = client.documents.index_documents(content_source_key, documents)
-  print(document_results)
+  client.documents.index_documents(content_source_key, documents)
 ```
 
-### Change API endpoint
+#### Deleting Documents
+
+Deleting a document from a custom content source:
 
 ```python
-client = Client(authorization_token, "https://your-server.example.com/api/v1/ent")
+  content_source_key = 'content source key'
+  ids = ['1234']
+
+  client.documents.delete_documents(content_source_key, ids)
+```
+
+### Permissions
+
+Permissions API features are found in the `client.permissions` module.
+
+#### Listing all permissions
+
+```python
+content_source_key = 'content source key'
+
+client.permissions.list_all_permissions(content_source_key)
+```
+
+#### Listing all permissions with paging
+
+```python
+content_source_key = 'content source key'
+
+client.permissions.list_all_permissions(content_source_key, size=20, current=2)
+```
+
+#### Retrieve a User's permissions
+
+```python
+content_source_key = 'content source key'
+user = 'enterprise_search'
+
+client.permissions.get_user_permissions(content_source_key, user)
+```
+
+#### Add permissions to a User
+
+```python
+content_source_key = 'content source key'
+user = 'enterprise_search'
+permissions = ['permission1']
+
+client.permissions.add_user_permissions(content_source_key, 'enterprise_search', { 'permissions': permissions })
+```
+
+#### Update a User's permissions
+
+```python
+content_source_key = 'content source key'
+user = 'enterprise_search'
+permissions = ['permission2']
+
+client.permissions.update_user_permissions(content_source_key, 'enterprise_search', { 'permissions': permissions })
+```
+
+#### Remove permissions from a User
+
+```python
+content_source_key = 'content source key'
+user = 'enterprise_search'
+permissions = ['permission2']
+
+client.permissions.remove_user_permissions(content_source_key, 'enterprise_search', { 'permissions': permissions })
 ```
 
 ## FAQ 🔮

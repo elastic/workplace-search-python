@@ -39,7 +39,7 @@ class TestRequestSession(TestCase):
             {
                 'Authorization': 'Bearer {}'.format(self.dummy_authorization_token),
                 'X-Swiftype-Client': 'elastic-enterprise-search-python',
-                'X-Swiftype-Client-Version': '0.1.0',
+                'X-Swiftype-Client-Version': '0.2.0',
             }
         )
 

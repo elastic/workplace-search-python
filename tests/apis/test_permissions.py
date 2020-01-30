@@ -11,7 +11,7 @@ from .fixtures.list_all_permissions_response import *
 from .fixtures.list_all_permissions_with_paging_response import *
 from .fixtures.remove_user_permissions_response import *
 from .fixtures.update_user_permissions_response import *
-from elastic_enterprise_search.client import Client
+from elastic_workplace_search.client import Client
 
 
 class TestPermissions(TestCase):

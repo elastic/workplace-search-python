@@ -1,19 +1,19 @@
-"""Exceptions raised by Elastic Enterprise Search Client."""
+"""Exceptions raised by Elastic Workplace Search Client."""
 
-class EnterpriseSearchError(Exception):
-    """Base class for all Enterprise Search errors."""
+class WorkplaceSearchError(Exception):
+    """Base class for all Workplace Search errors."""
 
-class InvalidCredentials(EnterpriseSearchError):
+class InvalidCredentials(WorkplaceSearchError):
     """Raised when request cannot authenticate"""
 
-class NonExistentRecord(EnterpriseSearchError):
+class NonExistentRecord(WorkplaceSearchError):
     """Raised when record does not exist"""
 
-class RecordAlreadyExists(EnterpriseSearchError):
+class RecordAlreadyExists(WorkplaceSearchError):
     """Raised when record already exists"""
 
-class BadRequest(EnterpriseSearchError):
+class BadRequest(WorkplaceSearchError):
     """Raised when bad request"""
 
-class Forbidden(EnterpriseSearchError):
+class Forbidden(WorkplaceSearchError):
     """Raised when http forbidden"""

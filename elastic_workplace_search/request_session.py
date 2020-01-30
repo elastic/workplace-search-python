@@ -1,5 +1,5 @@
 import requests
-import elastic_enterprise_search
+import elastic_workplace_search
 from .exceptions import InvalidCredentials, NonExistentRecord, RecordAlreadyExists, BadRequest, Forbidden
 
 
@@ -12,8 +12,8 @@ class RequestSession:
 
         headers = {
             'Authorization': "Bearer {}".format(self.authorization_token),
-            'X-Swiftype-Client': 'elastic-enterprise-search-python',
-            'X-Swiftype-Client-Version': elastic_enterprise_search.__version__,
+            'X-Swiftype-Client': 'elastic-workplace-search-python',
+            'X-Swiftype-Client-Version': elastic_workplace_search.__version__,
         }
         self.session.headers.update(headers)
 

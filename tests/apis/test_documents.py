@@ -7,7 +7,7 @@ except ImportError:
     from mock import MagicMock, patch
 
 from .mock_endpoint import mock_endpoint
-from elastic_enterprise_search.client import Client
+from elastic_workplace_search.client import Client
 from .fixtures.index_documents_response import *
 from .fixtures.delete_documents_response import *
 

@@ -1,6 +1,6 @@
-<p align="center"><a href="https://circleci.com/gh/elastic/enterprise-search-python"><img src="https://circleci.com/gh/elastic/enterprise-search-python.svg" alt="CircleCI build"></a>
+<p align="center"><a href="https://circleci.com/gh/elastic/workplace-search-python"><img src="https://circleci.com/gh/elastic/workplace-search-python.svg" alt="CircleCI build"></a>
 
-> A first-party Python client for [Elastic Enterprise Search](https://www.elastic.co/solutions/enterprise-search).
+> A first-party Python client for [Elastic Workplace Search](https://www.elastic.co/workplace-search).
 
 ## Contents
 
@@ -22,7 +22,7 @@ Installed with
 `pip <http://pypi.python.org/pypi/pip>`:
 
 ```bash
-$ python -m pip install elastic_enterprise_search
+$ python -m pip install elastic_workplace_search
 ```
 
 You can also download and install the project source:
@@ -36,7 +36,7 @@ $ python setup.py install
 ### Creating a new Client
 
 ```python
-  from elastic_enterprise_search import Client
+  from elastic_workplace_search import Client
   authorization_token = 'authorization token'
   client = Client(authorization_token)
 ```
@@ -62,8 +62,8 @@ Indexing a document into a custom content source:
   documents = [
     {
       'id': '1234',
-      'url': 'https://github.com/elastic/enterprise-search-python',
-      'title': 'Elastic Enterprise Search Official Python Client',
+      'url': 'https://github.com/elastic/workplace-search-python',
+      'title': 'Elastic Workplace Search Official Python Client',
       'body': 'A descriptive body, with document contents and metadata'
     }
   ]
@@ -145,17 +145,17 @@ client.permissions.remove_user_permissions(content_source_key, 'enterprise_searc
 
 ### Where do I report issues with the client?
 
-If something is not working as expected, please open an [issue](https://github.com/elastic/enterprise-search-python/issues/new).
+If something is not working as expected, please open an [issue](https://github.com/elastic/workplace-search-python/issues/new).
 
 ## Contribute 🚀
 
 We welcome contributors to the project. Before you begin, a couple notes...
 
-+ Before opening a pull request, please create an issue to [discuss the scope of your proposal](https://github.com/elastic/enterprise-search-python/issues).
++ Before opening a pull request, please create an issue to [discuss the scope of your proposal](https://github.com/elastic/workplace-search-python/issues).
 + Please write simple code and concise documentation, when appropriate.
 
 ## License 📗
 
-[Apache 2.0](https://github.com/elastic/enterprise-search-python/blob/master/LICENSE.txt) © [Elastic](https://github.com/elastic)
+[Apache 2.0](https://github.com/elastic/workplace-search-python/blob/master/LICENSE.txt) © [Elastic](https://github.com/elastic)
 
-Thank you to all the [contributors](https://github.com/elastic/enterprise-search-python/graphs/contributors)!
+Thank you to all the [contributors](https://github.com/elastic/workplace-search-python/graphs/contributors)!

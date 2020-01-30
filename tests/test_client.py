@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from elastic_enterprise_search.client import Client
+from elastic_workplace_search.client import Client
 
 class TestClient(TestCase):
     dummy_authorization_token = 'authorization_token'

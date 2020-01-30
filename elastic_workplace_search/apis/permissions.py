@@ -1,8 +1,3 @@
-
-# Implements the Document Permissions API:
-#  https://swiftype.com/documentation/enterprise-search/api/document-permissions
-
-
 class Permissions:
 
     def __init__(self, session):

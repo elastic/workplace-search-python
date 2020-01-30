@@ -46,7 +46,7 @@ Retrieve your access token and a content source key after creating your content 
 ### Change API endpoint
 
 ```python
-client = Client(authorization_token, "https://your-server.example.com/api/v1/ent")
+client = Client(authorization_token, "https://your-server.example.com/api/ws/v1")
 ```
 
 ### Custom Source Documents

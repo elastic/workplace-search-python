@@ -1,5 +1,5 @@
 from requests.status_codes import codes
-from elastic_enterprise_search.client import Client
+from elastic_workplace_search.client import Client
 
 try:  # python 3.3+
     from unittest.mock import MagicMock, patch
@@ -17,7 +17,7 @@ def mock_endpoint(
                                  json=lambda: response)
 
     expected_endpoint = '{}/{}'\
-        .format(Client.ELASTIC_ENTERPRISE_SEARCH_BASE_URL, path)
+        .format(Client.ELASTIC_WORKPLACE_SEARCH_BASE_URL, path)
 
     def side_effect(*args, **kwargs):
         if args[0] == method and args[1] == expected_endpoint:

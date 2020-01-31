@@ -7,9 +7,9 @@ try:  # python 3.3+
 except ImportError:
     from mock import MagicMock, patch
 
-import elastic_enterprise_search
-from elastic_enterprise_search.request_session import RequestSession
-from elastic_enterprise_search.exceptions import InvalidCredentials
+import elastic_workplace_search
+from elastic_workplace_search.request_session import RequestSession
+from elastic_workplace_search.exceptions import InvalidCredentials
 
 
 class TestRequestSession(TestCase):
@@ -33,12 +33,12 @@ class TestRequestSession(TestCase):
             for k, v in iteritems(self.session.session.headers)
             if k in ['Authorization', 'X-Swiftype-Client', 'X-Swiftype-Client-Version']
         }
-        version = elastic_enterprise_search.__version__
+        version = elastic_workplace_search.__version__
         self.assertEqual(
             headers_to_check,
             {
                 'Authorization': 'Bearer {}'.format(self.dummy_authorization_token),
-                'X-Swiftype-Client': 'elastic-enterprise-search-python',
+                'X-Swiftype-Client': 'elastic-workplace-search-python',
                 'X-Swiftype-Client-Version': '0.2.0',
             }
         )

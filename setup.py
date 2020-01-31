@@ -20,7 +20,7 @@ finally:
 
 here = path.abspath(path.dirname(__file__))
 about = {}
-with open(path.join(here, 'elastic_enterprise_search', '__version__.py'), 'r', 'utf-8') as f:
+with open(path.join(here, 'elastic_workplace_search', '__version__.py'), 'r', 'utf-8') as f:
     exec(f.read(), about)
 
 setup(
@@ -44,7 +44,7 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
     ],
-    keywords='elastic enterprise search api',
+    keywords='elastic workplace search api',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     install_requires=[
         'requests',
@@ -59,7 +59,7 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     entry_points={
         'console_scripts': [
-            'elastic_enterprise_search=elastic_enterprise_search:main',
+            'elastic_workplace_search=elastic_workplace_search:main',
         ],
     },
     test_suite='tests'

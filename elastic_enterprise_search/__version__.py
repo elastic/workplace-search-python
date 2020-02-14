@@ -1,6 +1,6 @@
 __title__ = 'elastic_enterprise_search'
 __description__ = 'A Deprecated API client for Elastic Workplace Search. Use elastic_workplace_search instead.'
 __url__ = 'https://github.com/elastic/enterprise-search-python'
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 __author__ = 'Elastic'
 __author_email__ = 'support@elastic.co'

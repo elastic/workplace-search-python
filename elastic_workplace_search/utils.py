@@ -2,6 +2,7 @@ import signal
 import platform
 from functools import wraps
 
+
 class Timeout:
 
     def __init__(self, exception_class, seconds=1, error_message='Timeout'):
@@ -18,6 +19,7 @@ class Timeout:
 
     def __exit__(self, type, value, traceback):
         signal.alarm(0)
+
 
 def windows_incompatible(error_message=None):
     error_message = error_message or 'This function is not supported on Windows.'

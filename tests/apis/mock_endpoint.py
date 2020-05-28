@@ -2,9 +2,9 @@ from requests.status_codes import codes
 from elastic_workplace_search.client import Client
 
 try:  # python 3.3+
-    from unittest.mock import MagicMock, patch
+    from unittest.mock import MagicMock
 except ImportError:
-    from mock import MagicMock, patch
+    from mock import MagicMock
 
 
 def mock_endpoint(

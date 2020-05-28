@@ -1,4 +1,4 @@
-<p align="center"><a href="https://img.shields.io/github/workflow/status/elastic/workplace-search-python/test"><img src="https://circleci.com/gh/elastic/workplace-search-python.svg" alt="CircleCI build"></a>
+<p align="center"><a href="https://github.com/elastic/workplace-search-python/actions"><img src="https://github.com/elastic/workplace-search-python/workflows/CI/badge.svg" alt="GitHub Actions"></a>
 
 > A first-party Python client for [Elastic Workplace Search](https://www.elastic.co/workplace-search).
 
@@ -14,9 +14,7 @@
 
 ## Getting started 🐣
 
-Supports Python 2.7 and Python 3.3+.
-
-Depends on [futures](https://github.com/PythonCharmers/python-future) and [requests](https://github.com/requests/requests).
+Supports Python 2.7 and Python 3.4+.
 
 Installed with
 `pip <http://pypi.python.org/pypi/pip>`:
@@ -30,6 +28,8 @@ You can also download and install the project source:
 ```bash
 $ python setup.py install
 ```
+
+Depends on [requests](https://github.com/requests/requests) for making HTTP requests.
 
 ## Usage
 

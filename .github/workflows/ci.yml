@@ -1,0 +1,38 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  lint:
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: Lint
+        run: |
+          python3.7 -m pip install nox
+          nox -s lint
+
+  test:
+    env:
+      ENDPOINT: http://localhost:3002/api/ws/v1
+    strategy:
+      matrix:
+        python-version: [2.7, 3.4, 3.5, 3.6, 3.7, 3.8]
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set Up Python 3.7 to run nox
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Set Up Python - ${{ matrix.python-version }}
+        if: matrix.python_version != '3.7'
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Test
+        run: |
+          python3.7 -m pip install nox
+          nox -s test-${{ matrix.python-version }}

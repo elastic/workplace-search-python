@@ -25,11 +25,6 @@ def blacken(session):
 
 @nox.session()
 def lint(session):
-    session.install("flake8", "black", "twine")
-    # session.run("black", "--check", *SOURCE_FILES)
-    session.run(
-        "flake8",
-        "--select=E,W,F",
-        "--max-line-length=88",
-        *SOURCE_FILES
-    )
+    session.install("flake8", "black")
+    session.run("black", "--check", *SOURCE_FILES)
+    session.run("flake8", "--select=E,W,F", "--max-line-length=88", *SOURCE_FILES)

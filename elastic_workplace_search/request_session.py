@@ -5,21 +5,20 @@ from .exceptions import (
     NonExistentRecord,
     RecordAlreadyExists,
     BadRequest,
-    Forbidden
+    Forbidden,
 )
 
 
 class RequestSession:
-
     def __init__(self, authorization_token, base_url):
         self.authorization_token = authorization_token
         self.base_url = base_url
         self.session = requests.Session()
 
         headers = {
-            'Authorization': "Bearer {}".format(self.authorization_token),
-            'X-Swiftype-Client': 'elastic-workplace-search-python',
-            'X-Swiftype-Client-Version': elastic_workplace_search.__version__,
+            "Authorization": "Bearer {}".format(self.authorization_token),
+            "X-Swiftype-Client": "elastic-workplace-search-python",
+            "X-Swiftype-Client-Version": elastic_workplace_search.__version__,
         }
         self.session.headers.update(headers)
 

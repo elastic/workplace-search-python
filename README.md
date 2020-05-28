@@ -1,4 +1,4 @@
-<p align="center"><a href="https://circleci.com/gh/elastic/workplace-search-python"><img src="https://circleci.com/gh/elastic/workplace-search-python.svg" alt="CircleCI build"></a>
+<p align="center"><a href="https://img.shields.io/github/workflow/status/elastic/workplace-search-python/test"><img src="https://circleci.com/gh/elastic/workplace-search-python.svg" alt="CircleCI build"></a>
 
 > A first-party Python client for [Elastic Workplace Search](https://www.elastic.co/workplace-search).
 

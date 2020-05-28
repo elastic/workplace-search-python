@@ -41,5 +41,6 @@ setup(
     ],
     keywords="elastic workplace search api",
     packages=find_packages(exclude=["tests"]),
-    install_requires=["requests", "future"],
+    install_requires=["requests"],
+    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <4",
 )

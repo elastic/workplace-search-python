@@ -3,6 +3,7 @@ on: [push, pull_request]
 
 jobs:
   lint:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -17,19 +18,22 @@ jobs:
     env:
       ENDPOINT: http://localhost:3002/api/ws/v1
     strategy:
+      fail-fast: false
       matrix:
         python-version: [2.7, 3.4, 3.5, 3.6, 3.7, 3.8]
 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set Up Python 3.7 to run nox
-        uses: actions/setup-python@v1
+      - uses: actions/setup-python@v1
         with:
           python-version: 3.7
-      - name: Set Up Python - ${{ matrix.python-version }}
-        if: matrix.python_version != '3.7'
+      - if: matrix.python-version != '3.4' && matrix.python-version != '3.7'
         uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - if: matrix.python-version == '3.4'
+        uses: deadsnakes/action@v1.0.0
         with:
           python-version: ${{ matrix.python-version }}
       - name: Test

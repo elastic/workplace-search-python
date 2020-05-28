@@ -11,7 +11,7 @@ SOURCE_FILES = (
 
 @nox.session(python=["2.7", "3.4", "3.5", "3.6", "3.7", "3.8"])
 def test(session):
-    session.install(".", "-rdev-requirements.txt")
+    session.install(".", "pytest", "mock")
     session.run("pytest")
 
 

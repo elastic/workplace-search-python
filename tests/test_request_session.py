@@ -1,6 +1,5 @@
 from unittest import TestCase
 from requests.status_codes import codes
-from future.utils import iteritems
 
 try:  # python 3.3+
     from unittest.mock import MagicMock, patch
@@ -29,7 +28,7 @@ class TestRequestSession(TestCase):
     def test_headers_initialization(self):
         headers_to_check = {
             k: v
-            for k, v in iteritems(self.session.session.headers)
+            for k, v in self.session.session.headers.items()
             if k in ["Authorization", "X-Swiftype-Client", "X-Swiftype-Client-Version"]
         }
         version = elastic_workplace_search.__version__

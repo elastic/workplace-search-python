@@ -1,15 +1,14 @@
 from unittest import TestCase
-from requests.status_codes import codes
 
 try:  # python 3.3+
-    from unittest.mock import MagicMock, patch
+    from unittest.mock import patch
 except ImportError:
-    from mock import MagicMock, patch
+    from mock import patch
 
 from .mock_endpoint import mock_endpoint
 from elastic_workplace_search.client import Client
-from .fixtures.index_documents_response import *
-from .fixtures.delete_documents_response import *
+from .fixtures.index_documents_response import index_documents_response
+from .fixtures.delete_documents_response import delete_documents_response
 
 
 class TestDocuments(TestCase):

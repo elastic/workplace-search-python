@@ -1,16 +1,18 @@
 from unittest import TestCase
 try:  # python 3.3+
-    from unittest.mock import MagicMock, patch
+    from unittest.mock import patch
 except ImportError:
-    from mock import MagicMock, patch
+    from mock import patch
 
 from .mock_endpoint import mock_endpoint
-from .fixtures.add_user_permissions_response import *
-from .fixtures.get_user_permissions_response import *
-from .fixtures.list_all_permissions_response import *
-from .fixtures.list_all_permissions_with_paging_response import *
-from .fixtures.remove_user_permissions_response import *
-from .fixtures.update_user_permissions_response import *
+from .fixtures.add_user_permissions_response import add_user_permissions_response
+from .fixtures.get_user_permissions_response import get_user_permissions_response
+from .fixtures.list_all_permissions_response import list_all_permissions_response
+from .fixtures.list_all_permissions_with_paging_response import (
+    list_all_permissions_with_paging_response
+)
+from .fixtures.remove_user_permissions_response import remove_user_permissions_response
+from .fixtures.update_user_permissions_response import update_user_permissions_response
 from elastic_workplace_search.client import Client
 
 

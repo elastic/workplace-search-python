@@ -1,4 +1,4 @@
-from unittest import TestCase, skipIf
+from unittest import TestCase
 from requests.status_codes import codes
 from future.utils import iteritems
 
@@ -39,12 +39,12 @@ class TestRequestSession(TestCase):
             {
                 'Authorization': 'Bearer {}'.format(self.dummy_authorization_token),
                 'X-Swiftype-Client': 'elastic-workplace-search-python',
-                'X-Swiftype-Client-Version': '0.3.0',
+                'X-Swiftype-Client-Version': version,
             }
         )
 
     def test_request_throw_error(self):
         stubbed_return = MagicMock(status_code=codes.unauthorized)
         with patch('requests.Session.request', return_value=stubbed_return):
-            with self.assertRaises(InvalidCredentials) as _context:
+            with self.assertRaises(InvalidCredentials):
                 self.session.request('post', 'http://doesnt.matter.org')

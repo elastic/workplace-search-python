@@ -1,6 +1,12 @@
 import requests
 import elastic_workplace_search
-from .exceptions import InvalidCredentials, NonExistentRecord, RecordAlreadyExists, BadRequest, Forbidden
+from .exceptions import (
+    InvalidCredentials,
+    NonExistentRecord,
+    RecordAlreadyExists,
+    BadRequest,
+    Forbidden
+)
 
 
 class RequestSession:

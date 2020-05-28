@@ -7,7 +7,7 @@ from .apis.permissions import Permissions
 
 class Client:
 
-    ELASTIC_WORKPLACE_SEARCH_BASE_URL = 'http://localhost:3002/api/ws/v1'
+    ELASTIC_WORKPLACE_SEARCH_BASE_URL = "http://localhost:3002/api/ws/v1"
 
     def __init__(self, authorization_token, base_url=ELASTIC_WORKPLACE_SEARCH_BASE_URL):
         self.authorization_token = authorization_token

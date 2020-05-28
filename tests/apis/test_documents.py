@@ -12,62 +12,50 @@ from .fixtures.delete_documents_response import delete_documents_response
 
 
 class TestDocuments(TestCase):
-
     def setUp(self):
-        self.client = Client('authorization_token')
+        self.client = Client("authorization_token")
 
     def test_index_documents(self):
-        content_source_key = 'key'
+        content_source_key = "key"
         documents = [
-            {
-                'id': 1,
-                'url': '',
-                'title': '',
-                'body': ''
-            },
-            {
-                'id': 2,
-                'url': '',
-                'title': '',
-                'body': ''
-            }
+            {"id": 1, "url": "", "title": "", "body": ""},
+            {"id": 2, "url": "", "title": "", "body": ""},
         ]
 
         def test_request(request_properties):
-            actual_json = request_properties.pop('json')
+            actual_json = request_properties.pop("json")
             expected_json = documents
             self.assertEqual(actual_json, expected_json)
 
         mocked_endpoint = mock_endpoint(
-            'post',
-            'sources/{}/documents/bulk_create'.format(content_source_key),
+            "post",
+            "sources/{}/documents/bulk_create".format(content_source_key),
             index_documents_response,
-            test_request
+            test_request,
         )
 
         with patch(**mocked_endpoint):
-            response = self.client.documents.index_documents('key', documents)
+            response = self.client.documents.index_documents("key", documents)
             self.assertEqual(response.__len__(), 2)
 
     def test_delete_documents(self):
-        content_source_key = 'key'
-        ids = ['1']
+        content_source_key = "key"
+        ids = ["1"]
 
         def test_request(request_properties):
-            actual_json = request_properties.pop('json')
+            actual_json = request_properties.pop("json")
             expected_json = ids
             self.assertEqual(actual_json, expected_json)
 
         mocked_endpoint = mock_endpoint(
-            'post',
-            'sources/{}/documents/bulk_destroy'.format(content_source_key),
+            "post",
+            "sources/{}/documents/bulk_destroy".format(content_source_key),
             delete_documents_response,
-            test_request
+            test_request,
         )
 
         with patch(**mocked_endpoint):
             self.assertEqual(
-                self.client.documents.delete_documents(
-                    content_source_key, ids),
-                delete_documents_response
+                self.client.documents.delete_documents(content_source_key, ids),
+                delete_documents_response,
             )

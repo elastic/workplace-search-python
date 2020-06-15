@@ -16,7 +16,7 @@ jobs:
 
   test:
     env:
-      ENDPOINT: http://localhost:3002/api/ws/v1
+      ENDPOINT: http://localhost:8080/api/ws/v1
     strategy:
       fail-fast: false
       matrix:
@@ -24,6 +24,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
+      # Checkout and Setup Python
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v1
         with:
@@ -36,6 +37,20 @@ jobs:
         uses: deadsnakes/action@v1.0.0
         with:
           python-version: ${{ matrix.python-version }}
+
+      # Setup Enterprise Search
+      - name: Configure sysctl limits
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+      - name: Run Enterprise Search
+        uses: elastic/elastic-github-actions/enterprise-search@master
+        with:
+          stack-version: 7.7.0
+
+      # Run tests
       - name: Test
         run: |
           python3.7 -m pip install nox

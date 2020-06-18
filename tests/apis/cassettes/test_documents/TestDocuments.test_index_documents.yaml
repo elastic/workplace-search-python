@@ -1,0 +1,47 @@
+interactions:
+- request:
+    body: '[{"id": 1, "url": "", "title": "", "body": ""}, {"id": "2", "url": "",
+      "title": "", "body": ""}]'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer 32744aeb04f1269f57376347ee1d8f4e915e8273bfa9b2036aff4ef770bd2377
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '96'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: http://localhost:8080/api/ws/v1/sources/5eebbb1e5e21d6c1e64f9578/documents/bulk_create
+  response:
+    body:
+      string: '{"results":[{"id":"1","errors":[]},{"id":"2","errors":[]}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"524357b5bfe8f3cf4539eab2daa660ff"
+      Server:
+      - Jetty(9.2.29.v20191105)
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 279c7794-35e5-47ad-a5e0-3228fd8e031d
+      X-Runtime:
+      - '0.147254'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

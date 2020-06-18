@@ -1,0 +1,47 @@
+interactions:
+- request:
+    body: '[1, 2]'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer 32744aeb04f1269f57376347ee1d8f4e915e8273bfa9b2036aff4ef770bd2377
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '6'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: http://localhost:8080/api/ws/v1/sources/bad-source-key/documents/bulk_create
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Security-Policy:
+      - script-src 'nonce-e+nsspLfDiVaIGU5HixHxA==' 'strict-dynamic' 'self'; object-src
+        'none'; base-uri 'none'; frame-ancestors 'self';
+      Content-Type:
+      - text/html
+      Server:
+      - Jetty(9.2.29.v20191105)
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 81b28e5a-56c3-46e3-820a-8e6238361ca6
+      X-Runtime:
+      - '0.036074'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 404
+      message: Not Found
+version: 1

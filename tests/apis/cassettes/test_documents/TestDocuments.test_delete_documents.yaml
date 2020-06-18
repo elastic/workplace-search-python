@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: '[1, "2"]'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer 32744aeb04f1269f57376347ee1d8f4e915e8273bfa9b2036aff4ef770bd2377
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '8'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: http://localhost:8080/api/ws/v1/sources/5eebbb1e5e21d6c1e64f9578/documents/bulk_destroy
+  response:
+    body:
+      string: '{"results":[{"id":1,"success":true},{"id":"2","success":true}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"77b44f941fd70bd4db8769a374c4408d"
+      Server:
+      - Jetty(9.2.29.v20191105)
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 95ce13bc-5e1d-46f1-aaca-6858d1d310c6
+      X-Runtime:
+      - '0.164300'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

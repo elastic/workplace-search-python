@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: '{"permissions": ["permission1", "permission2"]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer 32744aeb04f1269f57376347ee1d8f4e915e8273bfa9b2036aff4ef770bd2377
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '47'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: http://localhost:8080/api/ws/v1/sources/5eebbb1e5e21d6c1e64f9578/permissions/enterprise_search
+  response:
+    body:
+      string: '{"user":"enterprise_search","permissions":["permission1","permission2"]}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"b468c7da0c319e7f5f76f1b107306a23"
+      Server:
+      - Jetty(9.2.29.v20191105)
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 122e5566-6959-4680-aa04-2739aa4dec14
+      X-Runtime:
+      - '0.076391'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

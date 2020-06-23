@@ -1,13 +1,9 @@
-from unittest import TestCase
-
 from elastic_workplace_search.client import Client
 
 
-class TestClient(TestCase):
+class TestClient:
     dummy_authorization_token = "authorization_token"
 
-    def setUp(self):
-        self.client = Client("authorization_token")
-
     def test_constructor(self):
-        self.assertIsInstance(self.client, Client)
+        client = Client(self.dummy_authorization_token)
+        assert isinstance(client, Client)

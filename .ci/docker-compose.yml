@@ -9,6 +9,7 @@ services:
       - "cluster.name=ent-search-docker-cluster"
       - "bootstrap.memory_lock=true"
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "xpack.license.self_generated.type=trial"
       - "xpack.security.enabled=true"
       - "xpack.security.authc.api_key.enabled=true"
       - "ELASTIC_PASSWORD=changeme"
@@ -26,7 +27,7 @@ services:
     environment:
       - "ENT_SEARCH_DEFAULT_PASSWORD=itsnotcloudsearch"
       - "ent_search.listen_port=8080"
-      - "ent_search.external_url=http://enterprise-search:8080"
+      - "ent_search.external_url=http://localhost:8080"
       - "ent_search.auth.source=standard"
       - "elasticsearch.host=http://elasticsearch:9200"
       - "allow_es_settings_modification=true"
@@ -38,4 +39,4 @@ services:
       - 8081:8081
     depends_on:
       - elasticsearch
-    entrypoint: /bin/bash -c "until curl -s -f -u elastic:changeme elasticsearch:9200/_license|grep -q basic; do sleep 2; done; /usr/local/bin/docker-entrypoint.sh"
+    entrypoint: /bin/bash -c "until curl -s -f -u elastic:changeme elasticsearch:9200/_license|grep -q trial; do sleep 2; done; /usr/local/bin/docker-entrypoint.sh"

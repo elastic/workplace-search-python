@@ -1,0 +1,42 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer 32744aeb04f1269f57376347ee1d8f4e915e8273bfa9b2036aff4ef770bd2377
+      Connection:
+      - keep-alive
+    method: GET
+    uri: http://localhost:8080/api/ws/v1/sources/5eebbb1e5e21d6c1e64f9578/permissions?page%5Bcurrent%5D=1&page%5Bsize%5D=25
+  response:
+    body:
+      string: '{"meta":{"page":{"current":1,"total_pages":1,"total_results":1,"size":25}},"results":[{"user":"enterprise_search","permissions":["permission1"]}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      ETag:
+      - W/"21372cc57fbf7b6f6d19643937e4eaaf"
+      Server:
+      - Jetty(9.2.29.v20191105)
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 7225d807-7a02-4322-a48a-6c05669c3eb6
+      X-Runtime:
+      - '0.041343'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,11 +1,6 @@
-from platform import python_version
 import pytest
 from requests.status_codes import codes
-
-try:  # python 3.3+
-    from unittest.mock import MagicMock, patch
-except ImportError:
-    from mock import MagicMock, patch
+from mock import MagicMock, patch
 
 import elastic_workplace_search
 from elastic_workplace_search.request_session import RequestSession
@@ -32,13 +27,13 @@ class TestRequestSession:
         version = elastic_workplace_search.__version__
 
         assert headers == {
-            "User-Agent": (
-                "elastic-workplace-search/%s (Python %s)" % (version, python_version())
-            ),
-            "Accept-Encoding": "gzip, deflate",
             "Accept": "*/*",
-            "Connection": "keep-alive",
+            "Accept-Encoding": "gzip, deflate",
             "Authorization": "Bearer authorization_token",
+            "Connection": "keep-alive",
+            "User-Agent": "python-requests/2.24.0",
+            "X-Swiftype-Client": "elastic-workplace-search-python",
+            "X-Swiftype-Client-Version": version,
         }
 
     def test_request_throw_error(self):

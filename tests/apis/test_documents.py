@@ -1,5 +1,5 @@
 import pytest
-from elastic_workplace_search import NonExistentRecord
+from elastic_workplace_search.exceptions import NonExistentRecord
 
 
 class TestDocuments:

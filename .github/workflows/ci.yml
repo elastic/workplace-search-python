@@ -42,16 +42,18 @@ jobs:
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
       - name: Run Enterprise Search
-        uses: elastic/elastic-github-actions/enterprise-search@master
-        with:
-          stack-version: 7.7.0
+        run: |
+          STACK_VERSION=7.7.0 ./.ci/start-stack.sh
       - name: Setup Custom API Source
         run: |
           python3.7 -m pip install selenium
-          python3.7 ./.ci/setup-ent-search.sh
+          python3.7 -m pip install -e .
+          export ENT_SEARCH_CREDS="$(python3.7 ./.ci/setup-ent-search.py)"
+          echo "::set-env name=ENT_SEARCH_CREDS::$ENT_SEARCH_CREDS"
 
       # Run tests
       - name: Test
         run: |
+          echo $ENT_SEARCH_CREDS
           python3.7 -m pip install nox
           nox -s test-${{ matrix.python-version }}

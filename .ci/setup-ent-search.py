@@ -20,11 +20,10 @@ def wait_and_click(driver: WebDriver, link_text=None, id=None, xpath=None):
     # Scroll to the element so it's on screen before clicking.
     driver.execute_script("arguments[0].scrollIntoView();", elem)
     elem.click()
-    time.sleep(0.1)
 
 
 def setup_custom_source(driver: WebDriver, username, password):
-    driver.implicitly_wait(2)
+    driver.implicitly_wait(5)
     driver.get("http://localhost:8080")
 
     # After first time logging in the service won't display this screen.
@@ -40,7 +39,7 @@ def setup_custom_source(driver: WebDriver, username, password):
     elem = driver.find_element_by_id("password")
     elem.send_keys(password)
 
-    wait_and_click(driver, id="non_saml_auth_submit")
+    wait_and_click(driver, xpath="//*[@data-test-subj='LoginButton']")
     wait_and_click(driver, link_text="Launch Workplace Search")
 
     # Create the Custom API Source
@@ -62,20 +61,15 @@ def setup_custom_source(driver: WebDriver, username, password):
     wait_and_click(driver, xpath="//*[contains(text(),'Create Custom API Source')]")
 
     # Show the Access Token and Key
-    wait_and_click(driver, xpath="//*[@data-test-subj='ShowAccessToken']")
-    wait_and_click(driver, xpath="//*[@data-test-subj='ShowContentSourceKey']")
+    for elem in driver.find_elements_by_xpath("//*[@aria-label='Show credential']"):
+        # Scroll to the element so it's on screen before clicking.
+        driver.execute_script("arguments[0].scrollIntoView();", elem)
+        elem.click()
 
-    access_token = str(
-        driver.find_element_by_xpath(
-            "//*[@data-test-subj='AccessTokenInput']"
-        ).get_attribute("value")
-    )
-    content_source_key = str(
-        driver.find_element_by_xpath(
-            "//*[@data-test-subj='ContentSourceKeyInput']"
-        ).get_attribute("value")
-    )
-    return content_source_key, access_token
+    values = []
+    for elem in driver.find_elements_by_class_name("euiFieldText"):
+        values.append(elem.get_attribute("value"))
+    return tuple(values[:2])
 
 
 def index_documents(content_source_key, access_token):
@@ -116,7 +110,7 @@ def main():
             driver = webdriver.Firefox(options=options)
 
         # Setup a Custom Source with a given ID
-        content_source_key, access_token = setup_custom_source(
+        access_token, content_source_key = setup_custom_source(
             driver, username="enterprise_search", password="itsnotcloudsearch"
         )
 

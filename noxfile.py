@@ -14,7 +14,7 @@ def test(session):
     session.install(".")
     session.install("-r", "dev-requirements.txt")
 
-    session.run("pytest", "--record-mode=none", "tests/")
+    session.run("pytest", "tests/")
 
 
 @nox.session()

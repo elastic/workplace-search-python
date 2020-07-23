@@ -54,6 +54,5 @@ jobs:
       # Run tests
       - name: Test
         run: |
-          echo $ENT_SEARCH_CREDS
           python3.7 -m pip install nox
           nox -s test-${{ matrix.python-version }}

@@ -44,7 +44,7 @@ jobs:
       - name: Run Enterprise Search
         uses: elastic/elastic-github-actions/enterprise-search@master
         with:
-          stack-version: 7.8.0
+          stack-version: 7.7.0
       - name: Setup Custom API Source
         run: |
           python3.7 -m pip install selenium

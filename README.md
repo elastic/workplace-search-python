@@ -1,3 +1,13 @@
+> **⚠️ This client is deprecated ⚠️**
+>
+> As of Enterprise Search version 7.10.0, we are directing users to the new [Enterprise Search Python Client](https://github.com/elastic/enterprise-search-python) and
+> deprecating this client.
+>
+> This client will be compatible with all Enterprise Search 7.x releases, but will not be compatible with 8.x releases. Our development effort on this project will
+> be limited to bug fixes. All future enhancements will be focused on the Enterprise Search Python Client.
+>
+> Thank you! - Elastic
+
 <p align="center"><a href="https://github.com/elastic/workplace-search-python/actions"><img src="https://github.com/elastic/workplace-search-python/workflows/CI/badge.svg" alt="GitHub Actions"></a>
 
 > A first-party Python client for [Elastic Workplace Search](https://www.elastic.co/workplace-search).
